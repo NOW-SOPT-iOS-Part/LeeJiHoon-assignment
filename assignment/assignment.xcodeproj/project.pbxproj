@@ -12,8 +12,8 @@
 		78BAE79B2BC43AC30013CACE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE79A2BC43AC30013CACE /* ViewController.swift */; };
 		78BAE7A02BC43AC40013CACE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78BAE79F2BC43AC40013CACE /* Assets.xcassets */; };
 		78BAE7A32BC43AC40013CACE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78BAE7A12BC43AC40013CACE /* LaunchScreen.storyboard */; };
-		78BAE7AC2BC43DB60013CACE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 78BAE7AB2BC43DB60013CACE /* SnapKit */; };
-		78BAE7B12BC43E390013CACE /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 78BAE7B02BC43E390013CACE /* Then */; };
+		78BAE7FF2BC4DE1C0013CACE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 78BAE7FE2BC4DE1C0013CACE /* SnapKit */; };
+		78BAE8022BC4DE240013CACE /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 78BAE8012BC4DE240013CACE /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,8 +31,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78BAE7AC2BC43DB60013CACE /* SnapKit in Frameworks */,
-				78BAE7B12BC43E390013CACE /* Then in Frameworks */,
+				78BAE7FF2BC4DE1C0013CACE /* SnapKit in Frameworks */,
+				78BAE8022BC4DE240013CACE /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +58,7 @@
 		78BAE7952BC43AC30013CACE /* assignment */ = {
 			isa = PBXGroup;
 			children = (
+				78BAE7B42BC443FE0013CACE /* font */,
 				78BAE7962BC43AC30013CACE /* AppDelegate.swift */,
 				78BAE7982BC43AC30013CACE /* SceneDelegate.swift */,
 				78BAE79A2BC43AC30013CACE /* ViewController.swift */,
@@ -66,6 +67,13 @@
 				78BAE7A42BC43AC40013CACE /* Info.plist */,
 			);
 			path = assignment;
+			sourceTree = "<group>";
+		};
+		78BAE7B42BC443FE0013CACE /* font */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = font;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,8 +93,8 @@
 			);
 			name = assignment;
 			packageProductDependencies = (
-				78BAE7AB2BC43DB60013CACE /* SnapKit */,
-				78BAE7B02BC43E390013CACE /* Then */,
+				78BAE7FE2BC4DE1C0013CACE /* SnapKit */,
+				78BAE8012BC4DE240013CACE /* Then */,
 			);
 			productName = assignment;
 			productReference = 78BAE7932BC43AC30013CACE /* assignment.app */;
@@ -117,9 +125,9 @@
 			);
 			mainGroup = 78BAE78A2BC43AC30013CACE;
 			packageReferences = (
-				78BAE7AA2BC43DB60013CACE /* XCRemoteSwiftPackageReference "SnapKit" */,
-				78BAE7AF2BC43E390013CACE /* XCRemoteSwiftPackageReference "Then" */,
-				78BAE7B32BC43E510013CACE /* XCRemoteSwiftPackageReference "Lookin" */,
+				78BAE7FD2BC4DE1C0013CACE /* XCRemoteSwiftPackageReference "SnapKit" */,
+				78BAE8002BC4DE240013CACE /* XCRemoteSwiftPackageReference "Then" */,
+				78BAE8032BC4DE2C0013CACE /* XCRemoteSwiftPackageReference "Lookin" */,
 			);
 			productRefGroup = 78BAE7942BC43AC30013CACE /* Products */;
 			projectDirPath = "";
@@ -219,7 +227,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -276,7 +284,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -297,8 +305,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = assignment/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -325,8 +332,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = assignment/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -366,7 +372,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		78BAE7AA2BC43DB60013CACE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		78BAE7FD2BC4DE1C0013CACE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -374,7 +380,7 @@
 				minimumVersion = 5.7.1;
 			};
 		};
-		78BAE7AF2BC43E390013CACE /* XCRemoteSwiftPackageReference "Then" */ = {
+		78BAE8002BC4DE240013CACE /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then.git";
 			requirement = {
@@ -382,7 +388,7 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		78BAE7B32BC43E510013CACE /* XCRemoteSwiftPackageReference "Lookin" */ = {
+		78BAE8032BC4DE2C0013CACE /* XCRemoteSwiftPackageReference "Lookin" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hughkli/Lookin.git";
 			requirement = {
@@ -393,14 +399,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		78BAE7AB2BC43DB60013CACE /* SnapKit */ = {
+		78BAE7FE2BC4DE1C0013CACE /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 78BAE7AA2BC43DB60013CACE /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 78BAE7FD2BC4DE1C0013CACE /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		78BAE7B02BC43E390013CACE /* Then */ = {
+		78BAE8012BC4DE240013CACE /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 78BAE7AF2BC43E390013CACE /* XCRemoteSwiftPackageReference "Then" */;
+			package = 78BAE8002BC4DE240013CACE /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
