@@ -56,6 +56,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         passwordTextFieldView.rightView = eyeButton
         passwordTextFieldView.rightViewMode = .always
         
+
+        idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        
     }
     
     
@@ -135,8 +139,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     @objc func textFieldDidChange(_ textField: UITextField) {
            // 두 텍스트 필드가 모두 입력되었는지 확인
-           let isBothFilled = (idTextFieldView.text?.isEmpty ?? true) && (passwordTextFieldView.text?.isEmpty ?? true)
-           loginButton.backgroundColor = isBothFilled ? .red : .gray
+           let isBothFilled = !(idTextFieldView.text?.isEmpty ?? true) && !(passwordTextFieldView.text?.isEmpty ?? true)
+           loginButton.backgroundColor = isBothFilled ? .red : .clear
        }
 }
 
