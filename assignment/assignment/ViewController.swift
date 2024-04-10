@@ -31,7 +31,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     let loginButton = UIButton().then {
-        $0.backgroundColor = UIColor.gray
+        $0.backgroundColor = UIColor.clear
+        $0.layer.borderColor = UIColor(named: "gray4")?.cgColor
+        $0.layer.borderWidth = 1
         $0.setTitle("로그인하기", for: .normal)
         $0.layer.cornerRadius = 3
     }
@@ -108,16 +110,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    // TF 호출
+    // TF 포커스 호출
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // 테두리 색상 변경
         textField.layer.borderColor = CGColor(gray: 1, alpha: 1)
         textField.layer.borderWidth = 1.0
     }
     
+    // TF 포커스 해제
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderColor = UIColor.clear.cgColor
+        textField.layer.borderWidth = 0.0
+        }
+    
     // 텍스트가 변경될 때 호출되는 메서드
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // 'x' 버튼 활성화
         textField.clearButtonMode = .whileEditing
         return true
     }
@@ -127,13 +134,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc func textFieldDidChange(_ textField: UITextField) {
-        let isBothFilled = !(idTextFieldView.text?.isEmpty ?? true) && !(passwordTextFieldView.text?.isEmpty ?? true)
-        loginButton.backgroundColor = isBothFilled ? .red : .gray
-    }
+           // 두 텍스트 필드가 모두 입력되었는지 확인
+           let isBothFilled = (idTextFieldView.text?.isEmpty ?? true) && (passwordTextFieldView.text?.isEmpty ?? true)
+           loginButton.backgroundColor = isBothFilled ? .red : .gray
+       }
 }
 
 //
-
-#Preview{
-    ViewController()
-}
+//#Preview{
+//    ViewController()
+//}
