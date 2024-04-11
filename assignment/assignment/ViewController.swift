@@ -11,6 +11,8 @@ import Then
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
+    //MARK: - Properties
+    
     let loginLabel = UILabel().then {
         $0.text = "TVING ID 로그인"
         $0.textColor = UIColor(named: "gray84")
@@ -38,6 +40,41 @@ class ViewController: UIViewController, UITextFieldDelegate {
         $0.layer.cornerRadius = 3
     }
     
+    let findId = UILabel().then {
+        $0.text = "아이디 찾기"
+        $0.textColor = UIColor(named: "gray2")
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 14)
+    }
+    
+    let findPw = UILabel().then {
+        $0.text = "비밀번호 찾기"
+        $0.textColor = UIColor(named: "gray2")
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 14)
+    }
+    
+    let noAccount = UILabel().then {
+        $0.text = "아직계정이 없으신가요?"
+        $0.textColor = UIColor(named: "gray3")
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 14)
+    }
+    
+    let makeAccount = UIButton().then {
+        let title = "닉네임 만들러 가기"
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: "Pretendard-SemiBold", size: 14)!,
+            .foregroundColor: UIColor(named: "gray2")!,
+            .underlineStyle: NSUnderlineStyle.single.rawValue
+        ]
+        
+        let attributedTitle = NSMutableAttributedString(string: title, attributes: attributes)
+        $0.setAttributedTitle(attributedTitle, for: .normal)
+    }
+
+    
+    let spaceView = UIView().then {
+        $0.backgroundColor = UIColor(named: "gray2")
+    }
+    
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,19 +93,33 @@ class ViewController: UIViewController, UITextFieldDelegate {
         passwordTextFieldView.rightView = eyeButton
         passwordTextFieldView.rightViewMode = .always
         
-
+        
         idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-            passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         
     }
     
-    
+    //MARK: - AddSubview
     func addSubViews() {
-        view.addSubview(loginLabel)
-        view.addSubview(idTextFieldView)
-        view.addSubview(passwordTextFieldView)
-        view.addSubview(loginButton)
+        let views = [
+            loginLabel,
+            idTextFieldView,
+            passwordTextFieldView,
+            loginButton,
+            findId,
+            findPw,
+            noAccount,
+            makeAccount,
+            spaceView
+        ]
+        views.forEach {
+            view.addSubview(
+                $0
+            )
+        }
+        
     }
+    
     
     
     //MARK: - layout
@@ -95,11 +146,40 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(passwordTextFieldView.snp.bottom).offset(21)
-
+            
             make.centerX.equalTo(view)
             make.width.equalTo(335)
             make.height.equalTo(52)
         }
+        
+        findId.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(31)
+            make.leading.equalTo(view).offset(85)
+        }
+        
+        spaceView.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.top.equalTo(loginButton.snp.bottom).offset(31)
+            make.width.equalTo(2)
+            make.height.equalTo(14)
+        }
+
+        
+        findPw.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(31)
+            make.trailing.equalTo(view).offset(-86)
+        }
+        
+        noAccount.snp.makeConstraints { make in
+            make.top.equalTo(findId.snp.bottom).offset(12)
+            make.leading.equalTo(view.snp.leading).offset(51)
+        }
+        
+        makeAccount.snp.makeConstraints { make in
+            make.top.equalTo(findPw.snp.bottom).offset(12)
+            make.trailing.equalTo(view.snp.trailing).offset(-43)
+        }
+        
         
         //PlaceHolder 왼쪽 공간 띄우기
         let spacerView = UIView(frame:CGRect(x:0, y:0, width:22, height:10))
@@ -110,6 +190,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         passwordTextFieldView.leftViewMode = .always
         passwordTextFieldView.leftView = spacerViewForPassword
         
+        findId.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(31)
+            
+        }
         
     }
     
@@ -125,7 +209,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.clear.cgColor
         textField.layer.borderWidth = 0.0
-        }
+    }
     
     // 텍스트가 변경될 때 호출되는 메서드
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -136,15 +220,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @objc func togglePasswordView() {
         passwordTextFieldView.isSecureTextEntry.toggle()
     }
-
+    
+    //텍스트 필드 채워졌는지 확인
     @objc func textFieldDidChange(_ textField: UITextField) {
-           // 두 텍스트 필드가 모두 입력되었는지 확인
-           let isBothFilled = !(idTextFieldView.text?.isEmpty ?? true) && !(passwordTextFieldView.text?.isEmpty ?? true)
-           loginButton.backgroundColor = isBothFilled ? .red : .clear
-       }
+        let isBothFilled = !(idTextFieldView.text?.isEmpty ?? true) && !(passwordTextFieldView.text?.isEmpty ?? true)
+        loginButton.backgroundColor = isBothFilled ? .red : .clear
+    }
 }
 
-//
-//#Preview{
-//    ViewController()
-//}
+#Preview{
+    ViewController()
+}
