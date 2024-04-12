@@ -23,18 +23,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         $0.backgroundColor = UIColor(named: "gray4")
         $0.layer.cornerRadius = 3
         $0.attributedPlaceholder = NSAttributedString(string: "아이디", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "gray2")])
-        $0.clearButtonMode = .never
-
     }
-    
     
     let passwordTextFieldView = UITextField().then {
         $0.backgroundColor = UIColor(named: "gray4")
         $0.layer.cornerRadius = 3
         $0.attributedPlaceholder = NSAttributedString(string: "비밀번호", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "gray2")])
         $0.isSecureTextEntry = true
-        $0.clearButtonMode = .never
-
     }
     
     let loginButton = UIButton().then {
@@ -90,6 +85,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("Before setting clearButtonMode: \(idTextFieldView.clearButtonMode.rawValue)")
+            
+            idTextFieldView.clearButtonMode = .never
+            passwordTextFieldView.clearButtonMode = .never
+
+            print("After setting clearButtonMode: \(idTextFieldView.clearButtonMode.rawValue)")
+            
+        
         view.backgroundColor = .black
         idTextFieldView.delegate = self
         passwordTextFieldView.delegate = self
@@ -116,6 +119,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         xCircleButton.addTarget(self, action: #selector(handleXCircleButtonTap), for: .touchUpInside)
+
+        makeAccount.addTarget(self, action: #selector(presentModalView), for: .touchUpInside)
+
+        
 
     }
     
@@ -272,9 +279,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             passwordTextFieldView.text = ""
         }
     
-    
+    @objc func presentModalView() {
+        let modalViewController = NicknameViewController()
+        modalViewController.modalPresentationStyle = .overFullScreen
+        self.present(modalViewController, animated: true, completion: nil)
+        
+    }
+
 }
 //
-#Preview{
-    LoginViewController()
-}
+//#Preview{
+//    LoginViewController()
+//}
