@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - Properties
     
@@ -21,15 +21,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     let idTextFieldView = UITextField().then {
         $0.backgroundColor = UIColor(named: "gray4")
-        $0.placeholder = "아이디"
         $0.layer.cornerRadius = 3
+        $0.attributedPlaceholder = NSAttributedString(string: "아이디", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "gray2")])
+        $0.clearButtonMode = .never
+
     }
+    
     
     let passwordTextFieldView = UITextField().then {
         $0.backgroundColor = UIColor(named: "gray4")
-        $0.placeholder = "비밀번호"
-        
         $0.layer.cornerRadius = 3
+        $0.attributedPlaceholder = NSAttributedString(string: "비밀번호", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "gray2")])
+        $0.isSecureTextEntry = true
+        $0.clearButtonMode = .never
+
     }
     
     let loginButton = UIButton().then {
@@ -38,6 +43,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         $0.layer.borderWidth = 1
         $0.setTitle("로그인하기", for: .normal)
         $0.layer.cornerRadius = 3
+        $0.isEnabled = false
     }
     
     let findId = UILabel().then {
@@ -69,11 +75,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let attributedTitle = NSMutableAttributedString(string: title, attributes: attributes)
         $0.setAttributedTitle(attributedTitle, for: .normal)
     }
-
+    
     
     let spaceView = UIView().then {
         $0.backgroundColor = UIColor(named: "gray2")
     }
+    
+    
+    let eyeButton = UIButton(type: .custom)
+    let xCircleButton = UIButton(type: .custom)
+    
     
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
@@ -87,16 +98,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
         setConstraints()
         
         // 패스워드 텍스트 필드 설정
-        let eyeButton = UIButton(type: .custom)
         eyeButton.setImage(UIImage(named: "eyeIcon"), for: .normal)
         eyeButton.addTarget(self, action: #selector(togglePasswordView), for: .touchUpInside)
-        passwordTextFieldView.rightView = eyeButton
-        passwordTextFieldView.rightViewMode = .always
+        eyeButton.snp.makeConstraints { make in
+            make.trailing.equalTo(passwordTextFieldView.snp.trailing).offset(-20)
+            make.centerY.equalTo(passwordTextFieldView)
+            make.width.height.equalTo(24)
+        }
         
-        
+        xCircleButton.setImage(UIImage(named: "xCircle"), for: .normal)
+        xCircleButton.snp.makeConstraints { make in
+            make.trailing.equalTo(eyeButton.snp.leading).offset(-20)
+            make.centerY.equalTo(passwordTextFieldView)
+            make.width.height.equalTo(24)
+        }
+        //
         idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        
+        xCircleButton.addTarget(self, action: #selector(handleXCircleButtonTap), for: .touchUpInside)
+
     }
     
     //MARK: - AddSubview
@@ -110,7 +130,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
             findPw,
             noAccount,
             makeAccount,
-            spaceView
+            spaceView,
+            eyeButton,
+            xCircleButton
         ]
         views.forEach {
             view.addSubview(
@@ -134,6 +156,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             make.centerX.equalTo(view)
             make.width.equalTo(335)
             make.height.equalTo(52)
+            
         }
         
         passwordTextFieldView.snp.makeConstraints { make in
@@ -163,7 +186,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             make.width.equalTo(2)
             make.height.equalTo(14)
         }
-
+        
         
         findPw.snp.makeConstraints { make in
             make.top.equalTo(loginButton.snp.bottom).offset(31)
@@ -180,8 +203,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             make.trailing.equalTo(view.snp.trailing).offset(-43)
         }
         
-        
-        //PlaceHolder 왼쪽 공간 띄우기
+        //PlaceHolder 왼쪽공간 띄우기
         let spacerView = UIView(frame:CGRect(x:0, y:0, width:22, height:10))
         idTextFieldView.leftViewMode = .always
         idTextFieldView.leftView = spacerView
@@ -195,8 +217,23 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
         }
         
+        //오른쪽 버튼 공간 띄우기
+        eyeButton.setImage(UIImage(named: "eyeIcon"), for: .normal)
+        eyeButton.addTarget(self, action: #selector(togglePasswordView), for: .touchUpInside)
+        eyeButton.snp.makeConstraints { make in
+            make.trailing.equalTo(passwordTextFieldView.snp.trailing).offset(-20)
+            make.centerY.equalTo(passwordTextFieldView)
+            make.width.height.equalTo(24)
+        }
+        
+        xCircleButton.setImage(UIImage(named: "xcircle"), for: .normal)
+        xCircleButton.snp.makeConstraints { make in
+            make.trailing.equalTo(eyeButton.snp.leading).offset(-20)
+            make.centerY.equalTo(passwordTextFieldView)
+            make.width.height.equalTo(24)
+        }
+        
     }
-    
     
     // TF 포커스 호출
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -226,8 +263,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let isBothFilled = !(idTextFieldView.text?.isEmpty ?? true) && !(passwordTextFieldView.text?.isEmpty ?? true)
         loginButton.backgroundColor = isBothFilled ? .red : .clear
     }
+    
+    @objc func handleXCircleButtonTap() {
+            // 사용자가 입력한 텍스트를 출력하고 필드를 지웁니다.
+            print("ID: \(idTextFieldView.text ?? "")")
+            print("Password: \(passwordTextFieldView.text ?? "")")
+            idTextFieldView.text = ""
+            passwordTextFieldView.text = ""
+        }
+    
+    
 }
-
+//
 #Preview{
-    ViewController()
+    LoginViewController()
 }
