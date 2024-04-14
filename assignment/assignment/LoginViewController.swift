@@ -85,14 +85,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("Before setting clearButtonMode: \(idTextFieldView.clearButtonMode.rawValue)")
-            
-            idTextFieldView.clearButtonMode = .never
-            passwordTextFieldView.clearButtonMode = .never
-
-            print("After setting clearButtonMode: \(idTextFieldView.clearButtonMode.rawValue)")
-            
-        
         view.backgroundColor = .black
         idTextFieldView.delegate = self
         passwordTextFieldView.delegate = self
@@ -123,7 +115,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         makeAccount.addTarget(self, action: #selector(presentModalView), for: .touchUpInside)
 
         
-
+    
     }
     
     //MARK: - AddSubview
@@ -279,16 +271,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             passwordTextFieldView.text = ""
         }
     
+    
     @objc func presentModalView() {
         let modalViewController = NicknameViewController()
         
         if let nicknameVC = modalViewController.presentationController as? UISheetPresentationController {
             nicknameVC.detents = [.medium()]
+            nicknameVC.prefersGrabberVisible = true
+
         }
+        
         self.present(modalViewController, animated: true, completion: nil)
     }
 
 }
+
 //
 //#Preview{
 //    LoginViewController()
