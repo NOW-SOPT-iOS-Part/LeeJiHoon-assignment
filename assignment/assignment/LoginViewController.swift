@@ -9,7 +9,10 @@ import UIKit
 import SnapKit
 import Then
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewControllerDelegate {
+    func didLoginWithId(id: String) {
+        print(1)
+    }
     
     //MARK: - Properties
     
@@ -107,11 +110,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             make.centerY.equalTo(passwordTextFieldView)
             make.width.height.equalTo(24)
         }
-        //
+
         idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         xCircleButton.addTarget(self, action: #selector(handleXCircleButtonTap), for: .touchUpInside)
-
+        
+        loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         makeAccount.addTarget(self, action: #selector(presentModalView), for: .touchUpInside)
 
         
@@ -140,7 +144,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         
     }
-    
     
     
     //MARK: - layout
@@ -185,7 +188,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             make.width.equalTo(2)
             make.height.equalTo(14)
         }
-        
         
         findPw.snp.makeConstraints { make in
             make.top.equalTo(loginButton.snp.bottom).offset(31)
@@ -253,6 +255,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    //비밀번호 보안처리
     @objc func togglePasswordView() {
         passwordTextFieldView.isSecureTextEntry.toggle()
     }
@@ -260,18 +263,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //텍스트 필드 채워졌는지 확인
     @objc func textFieldDidChange(_ textField: UITextField) {
         let isBothFilled = !(idTextFieldView.text?.isEmpty ?? true) && !(passwordTextFieldView.text?.isEmpty ?? true)
-        loginButton.backgroundColor = isBothFilled ? .red : .clear
+        loginButton.isEnabled = isBothFilled  
+        loginButton.backgroundColor = isBothFilled ? UIColor(named: "red"): .clear
     }
-    
+
+    //지우기 버튼 눌럿을때 동작
     @objc func handleXCircleButtonTap() {
-            // 사용자가 입력한 텍스트를 출력하고 필드를 지웁니다.
-            print("ID: \(idTextFieldView.text ?? "")")
-            print("Password: \(passwordTextFieldView.text ?? "")")
             idTextFieldView.text = ""
             passwordTextFieldView.text = ""
         }
     
+    //로그인 화면 전환
+    @objc func handleLogin() {
+           let welcomeVC = WelcomeViewController()
+           welcomeVC.delegate = self
+           welcomeVC.id = idTextFieldView.text ?? ""
+            welcomeVC.modalPresentationStyle = .fullScreen 
+
+           present(welcomeVC, animated: true, completion: nil)
+       }
     
+    //닉네임 만들기
     @objc func presentModalView() {
         let modalViewController = NicknameViewController()
         
@@ -286,7 +298,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 }
 
-//
+
 //#Preview{
 //    LoginViewController()
 //}
