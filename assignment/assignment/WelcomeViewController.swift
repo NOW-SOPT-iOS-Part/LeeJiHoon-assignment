@@ -20,7 +20,7 @@ class WelcomeViewController: UIViewController {
     
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "tving")
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleToFill
     }
     
     let welcomeLabel = UILabel().then {
@@ -40,7 +40,6 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
         welcomeLabel.text = "\(id)님\n 반가워요!"
         
         backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
@@ -66,7 +65,7 @@ class WelcomeViewController: UIViewController {
     
     func Layouts() {
         imageView.snp.makeConstraints {
-            $0.top.equalTo(view.snp.top).offset(50)
+            $0.top.equalTo(view.snp.top).offset(58)
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
             $0.width.equalTo(375)
@@ -94,6 +93,6 @@ class WelcomeViewController: UIViewController {
     
 }
 
-//#Preview {
-//    WelcomeViewController()
-//}
+#Preview {
+    WelcomeViewController()
+}
