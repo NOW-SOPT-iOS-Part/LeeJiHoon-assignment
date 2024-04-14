@@ -281,9 +281,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @objc func presentModalView() {
         let modalViewController = NicknameViewController()
-        modalViewController.modalPresentationStyle = .overFullScreen
-        self.present(modalViewController, animated: true, completion: nil)
         
+        if let nicknameVC = modalViewController.presentationController as? UISheetPresentationController {
+            nicknameVC.detents = [.medium()]
+        }
+        self.present(modalViewController, animated: true, completion: nil)
     }
 
 }
