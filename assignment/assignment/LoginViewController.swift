@@ -16,6 +16,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
     
     //MARK: - Properties
     
+    var nickname: String?  // 클로저로 받을 닉네임
+
     let loginLabel = UILabel().then {
         $0.text = "TVING ID 로그인"
         $0.textColor = UIColor(named: "gray84")
@@ -278,24 +280,29 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
            let welcomeVC = WelcomeViewController()
            welcomeVC.delegate = self
            welcomeVC.id = idTextFieldView.text ?? ""
-            welcomeVC.modalPresentationStyle = .fullScreen 
+            welcomeVC.nickname = self.nickname  
+            welcomeVC.modalPresentationStyle = .fullScreen
 
            present(welcomeVC, animated: true, completion: nil)
        }
     
     //닉네임 만들기
+
     @objc func presentModalView() {
-        let modalViewController = NicknameViewController()
+            let modalViewController = NicknameViewController()
         
         if let nicknameVC = modalViewController.presentationController as? UISheetPresentationController {
             nicknameVC.detents = [.medium()]
             nicknameVC.prefersGrabberVisible = true
 
         }
-        
-        self.present(modalViewController, animated: true, completion: nil)
-    }
-
+            modalViewController.onSaveNickname = { [weak self] nickname in
+                self?.nickname = nickname  // 닉네임 저장
+                print("닉네임 저장됨: \(nickname)")
+            }
+            present(modalViewController, animated: true, completion: nil)
+        }
+    
 }
 
 

@@ -16,7 +16,10 @@ protocol WelcomeViewControllerDelegate: AnyObject {
 class WelcomeViewController: UIViewController {
     
     weak var delegate: WelcomeViewControllerDelegate?
+    //delegate에서 받은값
     var id: String = ""
+    //closure에서 받은값
+    var nickname: String?
     
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "tving")
@@ -37,42 +40,40 @@ class WelcomeViewController: UIViewController {
         $0.layer.cornerRadius = 3
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .black
         
-        welcomeLabel.text = "\(id)님\n 반가워요!"
-        
+        presentNicknameViewController()
+        configureLabel()
         backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
-        
         addSubViews()
         Layouts()
         
-        delegate?.didLoginWithId(id: id)
-        
+        print(id)
+        print(nickname)
+    }
+    
+    func configureLabel() {
+        if let nickname = nickname {
+            welcomeLabel.text = "\(nickname)님\n 반가워요!"
+            
+        } else {
+            welcomeLabel.text = "\(id)님\n 반가워요!"
+        }
     }
     
     func addSubViews() {
-        let views = [
-            imageView,
-            welcomeLabel,
-            backButton
-        ]
-        views.forEach {
-            view.addSubview($0)
-        }
-        
+        let views = [imageView, welcomeLabel, backButton]
+        views.forEach { view.addSubview($0) }
     }
     
     func Layouts() {
         imageView.snp.makeConstraints {
             $0.top.equalTo(view.snp.top).offset(58)
-            $0.leading.equalToSuperview().offset(0)
-            $0.trailing.equalToSuperview().offset(0)
-            $0.width.equalTo(375)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(200)
-
         }
         
         welcomeLabel.snp.makeConstraints {
@@ -82,20 +83,17 @@ class WelcomeViewController: UIViewController {
         
         backButton.snp.makeConstraints {
             $0.bottom.equalTo(view.snp.bottom).offset(-66)
-            $0.leading.equalTo(view.snp.leading).offset(20)
-            $0.trailing.equalTo(view.snp.trailing).offset(-20)
+            $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(52)
         }
     }
-    
     
     @objc func backToMain() {
         dismiss(animated: true, completion: nil)
     }
     
     
-    //MARK: - nickname 만들기로 닉네임 만든 경우
-    func presentNicknameViewController() {
+    @objc func presentNicknameViewController() {
         let nicknameVC = NicknameViewController()
         nicknameVC.onSaveNickname = { [weak self] nickname in
             self?.updateWelcomeText(with: nickname)
@@ -104,10 +102,10 @@ class WelcomeViewController: UIViewController {
     }
 
     func updateWelcomeText(with nickname: String) {
-        welcomeLabel.text = "\(nickname)님, 반갑습니다!"
+        DispatchQueue.main.async {
+            self.welcomeLabel.text = "\(nickname)님, 반갑습니다!"
+        }
     }
-    
-    
 }
 //
 //#Preview {
