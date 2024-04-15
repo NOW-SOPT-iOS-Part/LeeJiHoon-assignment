@@ -10,6 +10,10 @@ import Then
 
 class NicknameViewController: UIViewController, UITextFieldDelegate {
 
+    //MARK: - Properties
+    
+    var onSaveNickname: ((String) -> Void)?
+    
     let nicknameLabel = UILabel().then {
         $0.text = "닉네임을 입력해주세요"
         $0.textColor = UIColor.black
@@ -17,17 +21,23 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
     }
     
     let nicknameTextField = UITextField().then {
-        $0.backgroundColor = UIColor(named: "gray4")
+        $0.backgroundColor = UIColor(named: "gray84")
         $0.layer.cornerRadius = 3
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 14)
+        $0.textColor = UIColor(named: "gray4")
         $0.attributedPlaceholder = NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "gray2")])
+      
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: $0.frame.height))
         $0.leftView = paddingView
         $0.leftViewMode = .always
+        $0.isUserInteractionEnabled = true
     }
     
     let saveBtn = UIButton().then {
-        $0.backgroundColor = UIColor(named: "gray4")
-        
+        $0.backgroundColor = UIColor(named: "red")
+        $0.setTitle("저장하기", for: .normal)
+        $0.layer.cornerRadius = 3
+        $0.addTarget(self, action: #selector(saveNickname), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -35,20 +45,25 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
         
         view.backgroundColor = .white
         nicknameTextField.delegate = self
+        
         addSubViews()
         layouts()
+        setupActions()
     }
     
+    //MARK: - AddSubViews
     func addSubViews() {
         let views = [
             nicknameLabel,
-            nicknameTextField
+            nicknameTextField,
+            saveBtn
         ]
         views.forEach {
             view.addSubview($0)
         }
     }
     
+    //MARK: - Layouts
     func layouts() {
         nicknameLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(50)
@@ -61,16 +76,44 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
             $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(50)
         }
+        
+        saveBtn.snp.makeConstraints {
+            $0.top.equalTo(nicknameTextField.snp.bottom).offset(200)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.height.equalTo(50)
+        }
     }
+    
+    func setupActions() {
+        saveBtn.addTarget(self, action: #selector(saveNickname), for: .touchUpInside)
+    }
+    
 
+//정규식
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string.isEmpty { return true } // 백스페이스 허용
-        return string.range(of: "^[가-힣]*$", options: .regularExpression) != nil
+        let currentText = textField.text ?? ""
+        let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
+
+        //삭제
+        if string.isEmpty { return true }
+        //입력하는중에는 길이만 체크
+        return prospectiveText.count <= 10
     }
 
+    @objc func saveNickname() {
+        if let text = nicknameTextField.text, !text.isEmpty, text.range(of: "^[가-힣]{1,10}$", options: .regularExpression) != nil {
+            onSaveNickname?(text)
+            dismiss(animated: true, completion: nil)
+        } else {
+            //아 원래 에러처리해야하는데~
+            print("닉네임을 입력해주세요.")
+        }
+    }
+    
     
 }
-//
+
 //#Preview{
 //    NicknameViewController()
 //}

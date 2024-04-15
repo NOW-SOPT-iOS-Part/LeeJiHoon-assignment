@@ -40,6 +40,8 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .black
+        
         welcomeLabel.text = "\(id)님\n 반가워요!"
         
         backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
@@ -91,8 +93,23 @@ class WelcomeViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-}
+    
+    //MARK: - nickname 만들기로 닉네임 만든 경우
+    func presentNicknameViewController() {
+        let nicknameVC = NicknameViewController()
+        nicknameVC.onSaveNickname = { [weak self] nickname in
+            self?.updateWelcomeText(with: nickname)
+        }
+        present(nicknameVC, animated: true, completion: nil)
+    }
 
-#Preview {
-    WelcomeViewController()
+    func updateWelcomeText(with nickname: String) {
+        welcomeLabel.text = "\(nickname)님, 반갑습니다!"
+    }
+    
+    
 }
+//
+//#Preview {
+//    WelcomeViewController()
+//}
