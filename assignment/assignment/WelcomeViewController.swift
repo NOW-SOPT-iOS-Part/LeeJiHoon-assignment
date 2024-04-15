@@ -45,7 +45,7 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-        presentNicknameViewController()
+       // presentNicknameViewController()
         configureLabel()
         backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
         addSubViews()
@@ -92,20 +92,6 @@ class WelcomeViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    
-    @objc func presentNicknameViewController() {
-        let nicknameVC = NicknameViewController()
-        nicknameVC.onSaveNickname = { [weak self] nickname in
-            self?.updateWelcomeText(with: nickname)
-        }
-        present(nicknameVC, animated: true, completion: nil)
-    }
-
-    func updateWelcomeText(with nickname: String) {
-        DispatchQueue.main.async {
-            self.welcomeLabel.text = "\(nickname)님, 반갑습니다!"
-        }
-    }
 }
 //
 //#Preview {

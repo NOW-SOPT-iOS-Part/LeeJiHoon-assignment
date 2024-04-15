@@ -94,8 +94,6 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
-        
-        //삭제
         if string.isEmpty { return true }
         //입력하는중에는 길이만 체크
         return prospectiveText.count <= 10

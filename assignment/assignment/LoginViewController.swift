@@ -10,6 +10,7 @@ import SnapKit
 import Then
 
 class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewControllerDelegate {
+   
     func didLoginWithId(id: String) {
         print(1)
     }
@@ -140,11 +141,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
             xCircleButton
         ]
         views.forEach {
-            view.addSubview(
-                $0
-            )
+            view.addSubview($0)
         }
-        
     }
     
     
@@ -287,7 +285,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
        }
     
     //닉네임 만들기
-
     @objc func presentModalView() {
             let modalViewController = NicknameViewController()
         
@@ -302,7 +299,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
             }
             present(modalViewController, animated: true, completion: nil)
         }
-    
 }
 
 
