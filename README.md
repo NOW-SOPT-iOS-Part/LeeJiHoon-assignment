@@ -1,1 +1,0 @@
-<img width="1564" alt="iOS-15" src="https://github.com/NOW-SOPT-iOS-Part/LeeJiHoon-assignment/assets/54922625/087e6dbe-2da3-4d3c-a2cc-a526644d2776"><img width="1564" alt="iOS-15" src="https://github.com/NOW-SOPT-iOS-Part/LeeJiHoon-assignment/assets/54922625/31ac99e2-bc5b-4031-89c0-5ded5f8ad1d8">
