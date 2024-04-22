@@ -88,8 +88,13 @@ class WelcomeViewController: UIViewController {
         }
     }
     
-    @objc func backToMain() {
-        dismiss(animated: true, completion: nil)
+        @objc func backToMain() {
+            let mainVC = MainViewController()
+        
+            if let navigationController = self.navigationController {
+                navigationController.pushViewController(mainVC, animated: true)
+        
+        }
     }
     
 }

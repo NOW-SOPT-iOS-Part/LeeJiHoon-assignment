@@ -109,9 +109,11 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
+
+
 }
 
 //#Preview{
 //    NicknameViewController()
 //}
+

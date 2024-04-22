@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
+
 class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewControllerDelegate {
    
     func didLoginWithId(id: String) {
@@ -16,7 +17,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
     }
     
     //MARK: - Properties
-    
     var nickname: String?  // 클로저로 받을 닉네임
 
     let loginLabel = UILabel().then {
