@@ -37,6 +37,10 @@ struct MainModel {
             ]),
             .live([
                 LiveContent(image: UIImage(named: "contents5")!, title: "Live 1"),
+                LiveContent(image: UIImage(named: "contents5")!, title: "Live 1"),
+                LiveContent(image: UIImage(named: "contents5")!, title: "Live 1"),
+                LiveContent(image: UIImage(named: "contents5")!, title: "Live 1"),
+                LiveContent(image: UIImage(named: "contents5")!, title: "Live 1"),
                 LiveContent(image: UIImage(named: "contents5")!, title: "Live 2")
             ])
         ]

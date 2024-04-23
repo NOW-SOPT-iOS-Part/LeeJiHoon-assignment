@@ -12,73 +12,67 @@ import Then
 
 class ContentCell: UICollectionViewCell {
     
-    let cellidentifier = "ContentCell"
+    static let identifier = "ContentCell"
     
-    private let imageView = UIImageView()
+    private let imageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
+    
     private let titleLabel = UILabel().then {
         $0.textColor = .white
-        $0.numberOfLines = 1
-        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.font = .systemFont(ofSize: 20, weight: .bold)
     }
-    private let descLabel = UILabel().then {
-        $0.textColor = .lightGray
-        $0.numberOfLines = 1
-        $0.font = .systemFont(ofSize: 16)
-    }
-    private let stackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 2
-    }
+    
     private let optionButton = UIButton().then {
-        $0.setBackgroundImage(UIImage(named: "right-arrow"), for: .normal)
+        $0.setImage(UIImage(named: "right-arrow"), for: .normal)
+        $0.tintColor = .white
     }
     
     required init?(coder: NSCoder) {
-        fatalError()
+        fatalError("init(coder:) has not been implemented")
     }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .black
-        
-        self.contentView.addSubview(self.imageView)
-        self.contentView.addSubview(self.stackView)
-        self.stackView.addArrangedSubview(self.titleLabel)
-        self.stackView.addArrangedSubview(self.descLabel)
-        self.contentView.addSubview(self.optionButton)
-        
-        self.imageView.snp.makeConstraints {
-            $0.top.left.equalToSuperview()
-            $0.size.equalTo(40)
-            $0.bottom.equalToSuperview().priority(999)
+        setupViews()
+        setupConstraints()
+    }
+    
+    private func setupViews() {
+        contentView.addSubview(imageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(optionButton)
+    }
+    
+    private func setupConstraints() {
+        imageView.snp.makeConstraints {
+            $0.top.left.equalToSuperview().inset(10)
+            $0.width.equalTo(98)
+            $0.height.equalTo(148)
         }
-        self.stackView.snp.makeConstraints {
-            $0.left.equalTo(self.imageView.snp.right).offset(4)
-            $0.top.bottom.equalTo(self.imageView)
-            $0.right.equalTo(self.optionButton.snp.left)
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(imageView.snp.bottom).offset(10)
+            $0.left.right.equalToSuperview().inset(10)
         }
-        self.optionButton.snp.makeConstraints {
+        
+        optionButton.snp.makeConstraints {
             $0.size.equalTo(20)
-            $0.centerY.equalTo(self.imageView)
-            $0.right.equalToSuperview().inset(30)
+            $0.centerY.equalTo(imageView.snp.centerY)
+            $0.right.equalToSuperview().inset(10)
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.prepare(image: nil, titleText: nil, descText: nil)
+        imageView.image = nil
+        titleLabel.text = nil
     }
     
-    func prepare(image: UIImage?, titleText: String?, descText: String?) {
-        self.imageView.image = image
-        self.titleLabel.text = titleText
-        self.descLabel.text = descText
+    func mainCollectionConfigure(image: UIImage, title: String) {
+        imageView.image = image
+        titleLabel.text = title
     }
-    
-    func configure(image: UIImage, title: String) {
-           imageView.image = image
-           titleLabel.text = title
-       }
-    
 }
-
 

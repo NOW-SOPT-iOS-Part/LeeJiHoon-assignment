@@ -25,16 +25,16 @@ class MainViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self = self, sectionIndex < self.dataSource.count else { return nil }
             
-            // Assuming dataSource[section] needs to be accessed by index
             let sectionType = self.dataSource[sectionIndex]
             
+            //셀 종류별로 모음
             switch sectionType {
             case .mainContents:
                 return self.getLayoutContentsSection()
             case .live:
                 return self.getLayoutLiveSection()
             default:
-                return nil  // Provide a safe fallback
+                return nil
             }
         }
 
@@ -63,24 +63,27 @@ class MainViewController: UIViewController {
     
     // MARK: - UICollectionViewDataSource
     private func getLayoutContentsSection() -> NSCollectionLayoutSection {
-        // item
+    
+        //item
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.5),
-            heightDimension: .fractionalHeight(1.0)
+            widthDimension: .fractionalWidth(1/3),  // 한 줄에 3개의 아이템이 나타나도록 설정 -> 비율이 아닌 고정값으로 때려박았더니 그룹갯수 수정이슈 해결 야호!
+            heightDimension: .fractionalHeight(0.5)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 8)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         
-        // group
+        //group
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.9),
+            widthDimension: .fractionalWidth(0.8),  // 그룹 너비를 컬렉션 뷰의 전체 너비와 동일하게 설정
             heightDimension: .fractionalHeight(0.3)
         )
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item]
+            
         )
         
+        //title Text + 전체보기
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .absolute(40)
@@ -92,9 +95,10 @@ class MainViewController: UIViewController {
         )
         
         let footerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
+            widthDimension: .fractionalWidth(0.8),
             heightDimension: .estimated(11)
         )
+        
         let footer = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: footerSize,
             elementKind: UICollectionView.elementKindSectionFooter,
@@ -108,7 +112,7 @@ class MainViewController: UIViewController {
         return section
     }
     
-    
+    //MARK: - live cell
     private func getLayoutLiveSection() -> NSCollectionLayoutSection {
         // item
         let itemSize = NSCollectionLayoutSize(
@@ -127,7 +131,7 @@ class MainViewController: UIViewController {
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
             subitem: item,
-            count: 4
+            count: 2
         )
         
         let headerSize = NSCollectionLayoutSize(
@@ -169,10 +173,10 @@ extension MainViewController: UICollectionViewDataSource {
         switch dataSource[indexPath.section] {
         case .mainContents(let contents):
             let content = contents[indexPath.item]
-            cell.configure(image: content.image, title: content.title)
+            cell.mainCollectionConfigure(image: content.image, title: content.title)
         case .live(let lives):
             let live = lives[indexPath.item]
-            cell.configure(image: live.image, title: live.title)
+            cell.mainCollectionConfigure(image: live.image, title: live.title)
         }
         return cell
     }
