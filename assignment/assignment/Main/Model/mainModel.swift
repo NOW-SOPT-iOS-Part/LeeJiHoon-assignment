@@ -48,21 +48,21 @@ struct MainModel {
                 Content(image: UIImage(named: "contents4")!, title: "스즈메의 문단속"),
                 Content(image: UIImage(named: "contents5")!, title: "두산베어스")
                 
-            ], title: "Main Contents"),
+            ], title: "티빙에서 꼭 봐야하는 컨텐츠"),
             .freeContents(contents: [
                 FreeContent(image: UIImage(named: "contents1")!, title: "시그널"),
                 FreeContent(image: UIImage(named: "contents2")!, title: "해리포터와 마법사의돌"),
                 FreeContent(image: UIImage(named: "contents3")!, title: "반지의 제왕"),
                 FreeContent(image: UIImage(named: "contents4")!, title: "스즈메의 문단속"),
                 FreeContent(image: UIImage(named: "contents5")!, title: "두산베어스")
-            ], title: "Free Contents"),
+            ], title: "1화무료! 파라마운트 + 인기 시리즈"),
             .magicContents(contents: [
                 MagicContent(image: UIImage(named: "contents1")!, title: "시그널"),
                 MagicContent(image: UIImage(named: "contents2")!, title: "해리포터와 마법사의돌"),
                 MagicContent(image: UIImage(named: "contents3")!, title: "반지의 제왕"),
                 MagicContent(image: UIImage(named: "contents4")!, title: "스즈메의 문단속"),
                 MagicContent(image: UIImage(named: "contents5")!, title: "두산베어스")
-            ], title: "Magic Contents"),
+            ], title: "마술보다 더 신비로운 영화 (신비로운 영화사전님)"),
             .live(contents: [
                 LiveContent(image: UIImage(named: "contents5")!, title: "Live 1"),
                 LiveContent(image: UIImage(named: "contents5")!, title: "Live 1"),

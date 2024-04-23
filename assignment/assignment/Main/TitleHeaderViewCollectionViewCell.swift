@@ -16,7 +16,7 @@ class TitleHeaderViewCollectionViewCell: UICollectionViewCell {
 
       private let titleLabel = UILabel().then {
           $0.textColor = .white
-          $0.font = UIFont(name: "Pretendard-SemiBold", size: 23)
+          $0.font = UIFont(name: "Pretendard-SemiBold", size: 15)
       }
       
       private let subtitleLabel = UILabel().then {

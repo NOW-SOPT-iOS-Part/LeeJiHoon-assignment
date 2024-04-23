@@ -165,13 +165,13 @@ extension MainViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch dataSource[section] {
-        case .mainContents(let contents):
+        case .mainContents(let contents, _):
             return contents.count
-        case .live(let lives):
-            return lives.count
-        case .freeContents(let contents):
+        case .freeContents(let contents, _):
             return contents.count
-        case .magicContents(let contents):
+        case .magicContents(let contents, _):
+            return contents.count
+        case .live(let contents, _):
             return contents.count
         }
     }
@@ -179,58 +179,59 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
         switch dataSource[indexPath.section] {
-        case .mainContents(let contents):
+        case .mainContents(let contents, _):
             let content = contents[indexPath.item]
             cell.mainCollectionConfigure(image: content.image, title: content.title)
-        case .freeContents(let contents):
+        case .freeContents(let contents, _):
             let content = contents[indexPath.item]
             cell.mainCollectionConfigure(image: content.image, title: content.title)
-        case .magicContents(let contents):
+        case .magicContents(let contents, _):
             let content = contents[indexPath.item]
             cell.mainCollectionConfigure(image: content.image, title: content.title)
-            
-        case .live(let lives):
-            let live = lives[indexPath.item]
-            cell.mainCollectionConfigure(image: live.image, title: live.title)
+        case .live(let contents, _):
+            let content = contents[indexPath.item]
+            cell.mainCollectionConfigure(image: content.image, title: content.title)
         }
         return cell
     }
+
+
     
     //Header, Footer 지정
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-      
         switch kind {
-            
-      case UICollectionView.elementKindSectionHeader:
-        let header = collectionView.dequeueReusableSupplementaryView(
-          ofKind: UICollectionView.elementKindSectionHeader,
-          withReuseIdentifier: "TitleHeaderViewCollectionViewCell",
-          for: indexPath
-        ) as! TitleHeaderViewCollectionViewCell
-            
-            let sectionType = dataSource[indexPath.section]
-                   var titleText = "td"
-                   switch sectionType {
-                   case .mainContents(_, let title),
-                        .freeContents(_, let title),
-                        .magicContents(_, let title),
-                        .live(_, let title):
-                       titleText = title
-                   }
-                   header.prepare(titleText: titleText, subtitleText: "전체보기")
-                   return header
+        case UICollectionView.elementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: "TitleHeaderViewCollectionViewCell",
+                for: indexPath
+            ) as! TitleHeaderViewCollectionViewCell
+            switch dataSource[indexPath.section] {
+            case .mainContents(_, let title):
+                header.prepare(titleText: title, subtitleText: "전체보기")
+            case .freeContents(_, let title):
+                header.prepare(titleText: title, subtitleText: "전체보기")
+            case .magicContents(_, let title):
+                header.prepare(titleText: title, subtitleText: "전체보기")
+            case .live(_, let title):
+                header.prepare(titleText: title, subtitleText: "전체보기")
+            }
+            return header
 
-            
-      case UICollectionView.elementKindSectionFooter:
-        return collectionView.dequeueReusableSupplementaryView(
-          ofKind: UICollectionView.elementKindSectionFooter,
-          withReuseIdentifier: "FooterView",
-          for: indexPath
-        )
-      default:
-        return UICollectionReusableView()
-      }
+        case UICollectionView.elementKindSectionFooter:
+            let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: "FooterView",
+                for: indexPath
+            )
+            return footer
+
+        default:
+            fatalError("Unexpected element kind")
+        }
     }
+
+
     
 }
 
