@@ -45,9 +45,11 @@ class MainViewController: UIViewController {
             $0.contentInset = .zero
             $0.backgroundColor = .clear
             $0.clipsToBounds = true
+            
             $0.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
-            $0.register(TitleHeaderViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TitleHeaderView")
+            $0.register(TitleHeaderViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TitleHeaderViewCollectionViewCell")
             $0.register(DoosanFooterViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FooterView")
+            
             $0.dataSource = self
         }
         
@@ -174,6 +176,32 @@ extension MainViewController: UICollectionViewDataSource {
         }
         return cell
     }
+    
+    //Header, Footer 지정
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+      
+        switch kind {
+            
+      case UICollectionView.elementKindSectionHeader:
+        let header = collectionView.dequeueReusableSupplementaryView(
+          ofKind: UICollectionView.elementKindSectionHeader,
+          withReuseIdentifier: "TitleHeaderViewCollectionViewCell",
+          for: indexPath
+        ) as! TitleHeaderViewCollectionViewCell
+        header.prepare(titleText: "title 텍스트", subtitleText: "전체보기")
+        return header
+            
+      case UICollectionView.elementKindSectionFooter:
+        return collectionView.dequeueReusableSupplementaryView(
+          ofKind: UICollectionView.elementKindSectionFooter,
+          withReuseIdentifier: "FooterView",
+          for: indexPath
+        )
+      default:
+        return UICollectionReusableView()
+      }
+    }
+    
 }
 
 #Preview {

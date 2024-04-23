@@ -82,8 +82,3 @@ class ContentCell: UICollectionViewCell {
 }
 
 
-
-
-extension ContentCell {
-    static let identifier = "ContentCell"
-}

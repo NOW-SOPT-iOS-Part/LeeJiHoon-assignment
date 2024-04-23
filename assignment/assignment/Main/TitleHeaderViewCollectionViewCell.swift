@@ -11,6 +11,9 @@ import SnapKit
 
 class TitleHeaderViewCollectionViewCell: UICollectionViewCell {
     
+    static let identifier = "TitleHeaderViewCollectionViewCell"
+
+    
     private let titleLabel = UILabel().then {
         $0.textColor = .white
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 15)
@@ -44,4 +47,16 @@ class TitleHeaderViewCollectionViewCell: UICollectionViewCell {
     }
     
     
+    func prepare(titleText: String?, subtitleText: String?) {
+        
+        if let titleText = titleText {
+            self.titleLabel.text = titleText
+        }
+        
+        if let subtitleText = subtitleText {
+            self.subtitleLabel.text = subtitleText
+        }
+      self.titleLabel.text = titleText
+    }
+  
 }
