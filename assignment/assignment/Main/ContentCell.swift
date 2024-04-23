@@ -21,12 +21,7 @@ class ContentCell: UICollectionViewCell {
     
     private let titleLabel = UILabel().then {
         $0.textColor = .white
-        $0.font = .systemFont(ofSize: 20, weight: .bold)
-    }
-    
-    private let optionButton = UIButton().then {
-        $0.setImage(UIImage(named: "right-arrow"), for: .normal)
-        $0.tintColor = .white
+        $0.font = UIFont(name: "Pretendard-Medium", size: 10)
     }
     
     required init?(coder: NSCoder) {
@@ -42,7 +37,6 @@ class ContentCell: UICollectionViewCell {
     private func setupViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
-        contentView.addSubview(optionButton)
     }
     
     private func setupConstraints() {
@@ -57,11 +51,6 @@ class ContentCell: UICollectionViewCell {
             $0.left.right.equalToSuperview().inset(10)
         }
         
-        optionButton.snp.makeConstraints {
-            $0.size.equalTo(20)
-            $0.centerY.equalTo(imageView.snp.centerY)
-            $0.right.equalToSuperview().inset(10)
-        }
     }
     
     override func prepareForReuse() {

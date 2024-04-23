@@ -20,7 +20,7 @@ class TitleHeaderViewCollectionViewCell: UICollectionViewCell {
       }
       
       private let subtitleLabel = UILabel().then {
-          $0.textColor = .white
+          $0.textColor = UIColor(named: "gray3")
           $0.font = UIFont(name: "Pretendard-Medium", size: 12)
       }
       
@@ -28,13 +28,13 @@ class TitleHeaderViewCollectionViewCell: UICollectionViewCell {
           
           //이미지 sf심볼로 대체
           $0.image = UIImage(systemName: "chevron.right")
-          $0.tintColor = .white
+          $0.tintColor = UIColor(named: "gray3")
           $0.contentMode = .scaleAspectFit
       }
       
       private let subtitleStackView = UIStackView().then {
           $0.axis = .horizontal
-          $0.spacing = 1
+          $0.spacing = 4
           $0.alignment = .center
           $0.distribution = .fill
       }

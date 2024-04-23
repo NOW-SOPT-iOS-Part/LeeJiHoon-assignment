@@ -31,6 +31,10 @@ class MainViewController: UIViewController {
             switch sectionType {
             case .mainContents:
                 return self.getLayoutContentsSection()
+            case .freeContents:
+                return self.getLayoutContentsSection()
+            case .magicContents:
+                return self.getLayoutContentsSection()
             case .live:
                 return self.getLayoutLiveSection()
             default:
@@ -165,6 +169,10 @@ extension MainViewController: UICollectionViewDataSource {
             return contents.count
         case .live(let lives):
             return lives.count
+        case .freeContents(let contents):
+            return contents.count
+        case .magicContents(let contents):
+            return contents.count
         }
     }
 
@@ -174,6 +182,13 @@ extension MainViewController: UICollectionViewDataSource {
         case .mainContents(let contents):
             let content = contents[indexPath.item]
             cell.mainCollectionConfigure(image: content.image, title: content.title)
+        case .freeContents(let contents):
+            let content = contents[indexPath.item]
+            cell.mainCollectionConfigure(image: content.image, title: content.title)
+        case .magicContents(let contents):
+            let content = contents[indexPath.item]
+            cell.mainCollectionConfigure(image: content.image, title: content.title)
+            
         case .live(let lives):
             let live = lives[indexPath.item]
             cell.mainCollectionConfigure(image: live.image, title: live.title)
@@ -192,8 +207,19 @@ extension MainViewController: UICollectionViewDataSource {
           withReuseIdentifier: "TitleHeaderViewCollectionViewCell",
           for: indexPath
         ) as! TitleHeaderViewCollectionViewCell
-        header.prepare(titleText: "title 텍스트", subtitleText: "전체보기")
-        return header
+            
+            let sectionType = dataSource[indexPath.section]
+                   var titleText = "td"
+                   switch sectionType {
+                   case .mainContents(_, let title),
+                        .freeContents(_, let title),
+                        .magicContents(_, let title),
+                        .live(_, let title):
+                       titleText = title
+                   }
+                   header.prepare(titleText: titleText, subtitleText: "전체보기")
+                   return header
+
             
       case UICollectionView.elementKindSectionFooter:
         return collectionView.dequeueReusableSupplementaryView(
