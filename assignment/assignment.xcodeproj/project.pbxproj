@@ -94,9 +94,9 @@
 			children = (
 				78412EB72BD692B6002AA9E8 /* Model */,
 				78A510892BD652FE005AAE0F /* MainViewController.swift */,
-				78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */,
-				78412EBA2BD699C8002AA9E8 /* ContentCell.swift */,
 				78412EBE2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift */,
+				78412EBA2BD699C8002AA9E8 /* ContentCell.swift */,
+				78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
