@@ -9,7 +9,6 @@ import Then
 import SnapKit
 
 class CarouselCollectionViewCell: UICollectionViewCell {
-
     private lazy var imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
@@ -17,15 +16,40 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     }
     
     static let cellId = "CarouselCell"
-
+    
+    private let logoImages: [UIImage] = [
+        UIImage(named: "mainContents")!,
+        UIImage(named: "mainContents")!,
+        UIImage(named: "mainContents")!,
+        UIImage(named: "mainContents")!,
+        UIImage(named: "mainContents")!
+    ]
+    
+    private var currentIndex = 0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        startCarousel()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
+        startCarousel()
+    }
+    
+    // MARK: - Carousel
+    
+    private func startCarousel() {
+        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+            self?.updateCarouselImage()
+        }
+    }
+    
+    private func updateCarouselImage() {
+        imageView.image = logoImages[currentIndex]
+        currentIndex = (currentIndex + 1) % logoImages.count
     }
 }
 
@@ -40,15 +64,8 @@ extension CarouselCollectionViewCell {
             make.top.equalToSuperview()
             make.width.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.height.equalTo(300)
+            make.height.equalTo(375)
         }
     }
 }
 
-// MARK: - Public
-
-extension CarouselCollectionViewCell {
-    public func configure(image: UIImage?) {
-        imageView.image = image
-    }
-}

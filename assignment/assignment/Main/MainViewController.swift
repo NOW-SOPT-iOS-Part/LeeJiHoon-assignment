@@ -58,7 +58,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         setupCarouselCollectionView() // Carousel을 먼저 설정하고
-          setupCollectionView()
+        setupCollectionView()
         registerCollectionViewHeader()
 
     }
@@ -69,17 +69,16 @@ class MainViewController: UIViewController {
     }
     
     func carouselSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(375)) // 높이를 375로 설정
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
-        section.boundarySupplementaryItems = [header()]
 
         return section
     }
-
+    
     func header() -> NSCollectionLayoutBoundarySupplementaryItem {
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(400))
@@ -92,48 +91,53 @@ class MainViewController: UIViewController {
     }
 
     
-     func setupCollectionView() {
-        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let self = self, sectionIndex < self.dataSource.count else { return nil }
-            
-            let sectionType = self.dataSource[sectionIndex]
-            
-            //셀 종류별로 모음
-            switch sectionType {
-            case .mainContents:
-                return self.getLayoutContentsSection()
-            case .freeContents:
-                return self.getLayoutContentsSection()
-            case .magicContents:
-                return self.getLayoutContentsSection()
-            case .live:
-                return self.getLayoutLiveSection()
-            default:
-                return nil
+    func setupCollectionView() {
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+            guard let self = self else { return nil }
+
+            //Carousel 헤더
+            if sectionIndex == 0 {
+                return self.carouselSection()
+            } else {
+                // 기타 섹션
+                let adjustedSectionIndex = sectionIndex - 1
+                guard adjustedSectionIndex < self.dataSource.count else { return nil }
+                let sectionType = self.dataSource[adjustedSectionIndex]
+                
+                switch sectionType {
+                case .mainContents:
+                    return self.getLayoutContentsSection()
+                case .freeContents:
+                    return self.getLayoutContentsSection()
+                case .magicContents:
+                    return self.getLayoutContentsSection()
+                case .live:
+                    return self.getLayoutLiveSection()
+                default:
+                    return nil
+                }
             }
         }
-        
-        mainCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then {
-            $0.isScrollEnabled = true
-            $0.showsHorizontalScrollIndicator = false
-            $0.showsVerticalScrollIndicator = true
-            $0.contentInset = .zero
-            $0.backgroundColor = .clear
-            $0.clipsToBounds = true
-            
-            $0.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
-            $0.register(TitleHeaderViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TitleHeaderViewCollectionViewCell")
-            $0.register(DoosanFooterViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FooterView")
-            
-            $0.dataSource = self
-        }
-        
+
+        mainCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        mainCollectionView.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.cellId)
+        // 나머지 셀 및 헤더 등록
+        mainCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
+        mainCollectionView.register(TitleHeaderViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TitleHeaderViewCollectionViewCell")
+        mainCollectionView.register(DoosanFooterViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FooterView")
+
+        mainCollectionView.isScrollEnabled = true
+        mainCollectionView.backgroundColor = .clear
+        mainCollectionView.dataSource = self
+        mainCollectionView.delegate = self
+
         self.view.addSubview(mainCollectionView)
-         mainCollectionView.snp.makeConstraints {
-             $0.top.equalTo(collectionView.snp.bottom) // Carousel 아래에 배치
-             $0.left.right.bottom.equalTo(view)
-             }
+        mainCollectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
+
+
     
     // MARK: - Carousel CollectionView
     func setupCarouselCollectionView() {
@@ -263,8 +267,11 @@ extension MainViewController: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView === self.collectionView {
+       
+        if indexPath.section == 0 {
+            // Carousel 섹션
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCollectionViewCell.cellId, for: indexPath) as! CarouselCollectionViewCell
+            // 이미지 순환은 CarouselCollectionViewCell 내부에서 자동으로 처리
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
