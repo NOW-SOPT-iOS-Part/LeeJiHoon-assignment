@@ -28,12 +28,14 @@ struct LiveContent {
     let title: String
 }
 
+
 enum SectionType {
     case mainContents(contents: [Content], title: String)
     case freeContents(contents: [FreeContent], title: String)
     case magicContents(contents: [MagicContent], title: String)
     case live(contents: [LiveContent], title: String)
 }
+
 
 
 struct MainModel {

@@ -11,6 +11,7 @@
 		78412EBB2BD699C8002AA9E8 /* ContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EBA2BD699C8002AA9E8 /* ContentCell.swift */; };
 		78412EBF2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EBE2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift */; };
 		78412EC12BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */; };
+		78412EC32BD9E4EE002AA9E8 /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EC22BD9E4EE002AA9E8 /* CarouselCollectionViewCell.swift */; };
 		78A5108A2BD652FE005AAE0F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A510892BD652FE005AAE0F /* MainViewController.swift */; };
 		78BAE7972BC43AC30013CACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE7962BC43AC30013CACE /* AppDelegate.swift */; };
 		78BAE7992BC43AC30013CACE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE7982BC43AC30013CACE /* SceneDelegate.swift */; };
@@ -37,6 +38,7 @@
 		78412EBA2BD699C8002AA9E8 /* ContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCell.swift; sourceTree = "<group>"; };
 		78412EBE2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleHeaderViewCollectionViewCell.swift; sourceTree = "<group>"; };
 		78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoosanFooterViewCollectionViewCell.swift; sourceTree = "<group>"; };
+		78412EC22BD9E4EE002AA9E8 /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
 		78A510892BD652FE005AAE0F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		78BAE7932BC43AC30013CACE /* assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BAE7962BC43AC30013CACE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +81,17 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		78412EC42BD9EE0E002AA9E8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				78412EC22BD9E4EE002AA9E8 /* CarouselCollectionViewCell.swift */,
+				78412EBE2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift */,
+				78412EBA2BD699C8002AA9E8 /* ContentCell.swift */,
+				78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		78A510872BD64D45005AAE0F /* onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -93,10 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				78412EB72BD692B6002AA9E8 /* Model */,
+				78412EC42BD9EE0E002AA9E8 /* Cell */,
 				78A510892BD652FE005AAE0F /* MainViewController.swift */,
-				78412EBE2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift */,
-				78412EBA2BD699C8002AA9E8 /* ContentCell.swift */,
-				78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -240,6 +251,7 @@
 				78BAE79B2BC43AC30013CACE /* LoginViewController.swift in Sources */,
 				78412EBF2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift in Sources */,
 				78A5108A2BD652FE005AAE0F /* MainViewController.swift in Sources */,
+				78412EC32BD9E4EE002AA9E8 /* CarouselCollectionViewCell.swift in Sources */,
 				78412EB92BD692C4002AA9E8 /* mainModel.swift in Sources */,
 				78BAE7972BC43AC30013CACE /* AppDelegate.swift in Sources */,
 				78412EC12BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift in Sources */,
