@@ -13,6 +13,7 @@
 		78412EC12BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */; };
 		78412EC32BD9E4EE002AA9E8 /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EC22BD9E4EE002AA9E8 /* CarouselCollectionViewCell.swift */; };
 		78A5108A2BD652FE005AAE0F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A510892BD652FE005AAE0F /* MainViewController.swift */; };
+		78B643B42BDA418F00C2EBEF /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = 78B643B32BDA418F00C2EBEF /* LookinServer */; };
 		78BAE7972BC43AC30013CACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE7962BC43AC30013CACE /* AppDelegate.swift */; };
 		78BAE7992BC43AC30013CACE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE7982BC43AC30013CACE /* SceneDelegate.swift */; };
 		78BAE79B2BC43AC30013CACE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE79A2BC43AC30013CACE /* LoginViewController.swift */; };
@@ -66,6 +67,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78BAE8062BC4E1EA0013CACE /* Then in Frameworks */,
+				78B643B42BDA418F00C2EBEF /* LookinServer in Frameworks */,
 				78BAE8092BC4E1F00013CACE /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,6 +180,7 @@
 			packageProductDependencies = (
 				78BAE8052BC4E1EA0013CACE /* Then */,
 				78BAE8082BC4E1F00013CACE /* SnapKit */,
+				78B643B32BDA418F00C2EBEF /* LookinServer */,
 			);
 			productName = assignment;
 			productReference = 78BAE7932BC43AC30013CACE /* assignment.app */;
@@ -210,6 +213,7 @@
 			packageReferences = (
 				78BAE8042BC4E1EA0013CACE /* XCRemoteSwiftPackageReference "Then" */,
 				78BAE8072BC4E1F00013CACE /* XCRemoteSwiftPackageReference "SnapKit" */,
+				78B643B22BDA418F00C2EBEF /* XCRemoteSwiftPackageReference "LookinServer" */,
 			);
 			productRefGroup = 78BAE7942BC43AC30013CACE /* Products */;
 			projectDirPath = "";
@@ -471,6 +475,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		78B643B22BDA418F00C2EBEF /* XCRemoteSwiftPackageReference "LookinServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/QMUI/LookinServer/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.8;
+			};
+		};
 		78BAE8042BC4E1EA0013CACE /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then.git";
@@ -490,6 +502,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		78B643B32BDA418F00C2EBEF /* LookinServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78B643B22BDA418F00C2EBEF /* XCRemoteSwiftPackageReference "LookinServer" */;
+			productName = LookinServer;
+		};
 		78BAE8052BC4E1EA0013CACE /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 78BAE8042BC4E1EA0013CACE /* XCRemoteSwiftPackageReference "Then" */;
