@@ -65,8 +65,8 @@ class ContentCell: UICollectionViewCell {
             if isFullWidth {
                 $0.edges.equalToSuperview()
             } else {
-                $0.top.left.equalToSuperview().inset(10)
-                $0.width.equalTo(98)
+                $0.top.equalToSuperview().inset(10)
+                $0.width.equalToSuperview()
                 $0.height.equalTo(148)
             }
         }
