@@ -14,6 +14,7 @@
 		78412EC32BD9E4EE002AA9E8 /* CustomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EC22BD9E4EE002AA9E8 /* CustomFooterView.swift */; };
 		78A5108A2BD652FE005AAE0F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A510892BD652FE005AAE0F /* MainViewController.swift */; };
 		78B643B42BDA418F00C2EBEF /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = 78B643B32BDA418F00C2EBEF /* LookinServer */; };
+		78B643D62BDE30CC00C2EBEF /* UnderlineSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B643D52BDE30CC00C2EBEF /* UnderlineSegment.swift */; };
 		78BAE7972BC43AC30013CACE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE7962BC43AC30013CACE /* AppDelegate.swift */; };
 		78BAE7992BC43AC30013CACE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE7982BC43AC30013CACE /* SceneDelegate.swift */; };
 		78BAE79B2BC43AC30013CACE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BAE79A2BC43AC30013CACE /* LoginViewController.swift */; };
@@ -41,6 +42,7 @@
 		78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoosanFooterViewCollectionViewCell.swift; sourceTree = "<group>"; };
 		78412EC22BD9E4EE002AA9E8 /* CustomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFooterView.swift; sourceTree = "<group>"; };
 		78A510892BD652FE005AAE0F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		78B643D52BDE30CC00C2EBEF /* UnderlineSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegment.swift; sourceTree = "<group>"; };
 		78BAE7932BC43AC30013CACE /* assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BAE7962BC43AC30013CACE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78BAE7982BC43AC30013CACE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				78412EBA2BD699C8002AA9E8 /* ContentCell.swift */,
 				78412EC02BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift */,
 				78412EC22BD9E4EE002AA9E8 /* CustomFooterView.swift */,
+				78B643D52BDE30CC00C2EBEF /* UnderlineSegment.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 			files = (
 				78BAE81F2BC91D5D0013CACE /* NicknameViewController.swift in Sources */,
 				78BAE8212BC91D6A0013CACE /* WelcomeViewController.swift in Sources */,
+				78B643D62BDE30CC00C2EBEF /* UnderlineSegment.swift in Sources */,
 				78BAE79B2BC43AC30013CACE /* LoginViewController.swift in Sources */,
 				78412EBF2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift in Sources */,
 				78A5108A2BD652FE005AAE0F /* MainViewController.swift in Sources */,
