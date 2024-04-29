@@ -37,9 +37,19 @@ class RootCollectionViewController: UIViewController {
         vc.view.backgroundColor = .blue
         return vc
     }()
+    private let vc4: UIViewController = {
+        let vc = UIViewController()
+        vc.view.backgroundColor = .white
+        return vc
+    }()
+    private let vc5: UIViewController = {
+        let vc = UIViewController()
+        vc.view.backgroundColor = .black
+        return vc
+    }()
 
     var dataViewControllers: [UIViewController] {
-        [self.mainvc, self.vc2, self.vc3]
+        [self.mainvc, self.vc2, self.vc3,  self.vc4, self.vc5]
     }
     
     var currentPage: Int = 0 {
@@ -132,3 +142,7 @@ extension RootCollectionViewController: UIPageViewControllerDataSource, UIPageVi
         self.segmentedControl.selectedSegmentIndex = index
       }
     }
+
+#Preview {
+    RootCollectionViewController()
+}
