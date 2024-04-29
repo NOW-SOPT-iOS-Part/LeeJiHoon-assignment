@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		782EED6C2BDF8FC2000A3B96 /* RootCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782EED6B2BDF8FC2000A3B96 /* RootCollectionViewController.swift */; };
 		78412EB92BD692C4002AA9E8 /* mainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EB82BD692C4002AA9E8 /* mainModel.swift */; };
 		78412EBB2BD699C8002AA9E8 /* ContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EBA2BD699C8002AA9E8 /* ContentCell.swift */; };
 		78412EBF2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78412EBE2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		782EED6B2BDF8FC2000A3B96 /* RootCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCollectionViewController.swift; sourceTree = "<group>"; };
 		78412EB82BD692C4002AA9E8 /* mainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainModel.swift; sourceTree = "<group>"; };
 		78412EBA2BD699C8002AA9E8 /* ContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCell.swift; sourceTree = "<group>"; };
 		78412EBE2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleHeaderViewCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				78412EB72BD692B6002AA9E8 /* Model */,
 				78412EC42BD9EE0E002AA9E8 /* Cell */,
 				78A510892BD652FE005AAE0F /* MainViewController.swift */,
+				782EED6B2BDF8FC2000A3B96 /* RootCollectionViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				78412EBF2BD69D6F002AA9E8 /* TitleHeaderViewCollectionViewCell.swift in Sources */,
 				78A5108A2BD652FE005AAE0F /* MainViewController.swift in Sources */,
 				78412EC32BD9E4EE002AA9E8 /* CustomFooterView.swift in Sources */,
+				782EED6C2BDF8FC2000A3B96 /* RootCollectionViewController.swift in Sources */,
 				78412EB92BD692C4002AA9E8 /* mainModel.swift in Sources */,
 				78BAE7972BC43AC30013CACE /* AppDelegate.swift in Sources */,
 				78412EC12BD69D88002AA9E8 /* DoosanFooterViewCollectionViewCell.swift in Sources */,

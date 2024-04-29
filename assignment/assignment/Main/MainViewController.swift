@@ -14,12 +14,10 @@ class MainViewController: UIViewController {
     //MARK: - Properties
     private var mainCollectionView : UICollectionView!
     private var dataSource = MainModel.dummy() // 나와라 더미데이터
-    var dataViewControllers: [UIViewController] = []
 
     
     private func setupCompositionalLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-            // Here you can setup different sections based on sectionIndex
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
@@ -27,39 +25,14 @@ class MainViewController: UIViewController {
             return section
         }
     }
-    
-    private lazy var segmentedControl = UnderlineSegmentedControl(items: ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]).then {
-        $0.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
-    }
-    
-    private lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil).then {
-        $0.delegate = self
-        $0.dataSource = self
-        $0.view.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    private var viewControllers: [UIViewController] = []
-    private var currentPage: Int = 0 {
-        didSet {
-            let direction: UIPageViewController.NavigationDirection = oldValue < currentPage ? .forward : .reverse
-            pageViewController.setViewControllers([viewControllers[currentPage]], direction: direction, animated: true)
-        }
-    }
-    
+
     
     //   MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print("MainViewController - viewDidLoad() called")
         setupNavigationBar()
-        print("NavigationBar setup completed")
         setupCollectionView()
-        print("CollectionView setup completed")
-        setupUI()
-        print("UI setup completed")
-        setupPageViewController()
-        print("PageViewController setup completed")
     }
 
     
@@ -78,60 +51,7 @@ class MainViewController: UIViewController {
     @objc func rightButtonAction() {
         // 추후 오른쪽 버튼 클릭 시 수행할 동작
     }
-    
    
-    private func setupPageViewController() {
-        addChild(pageViewController)
-        view.addSubview(pageViewController.view)
-        pageViewController.didMove(toParent: self)
-        
-        pageViewController.view.snp.makeConstraints { make in
-            make.top.equalTo(segmentedControl.snp.bottom).offset(10)
-            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
-        
-        // 뷰 컨트롤러 인스턴스 생성 확인
-        viewControllers = [UIViewController(), UIViewController(), UIViewController(), UIViewController(), UIViewController()].enumerated().map { index, vc in
-            vc.view.backgroundColor = [UIColor.red, UIColor.green, UIColor.blue, UIColor.yellow, UIColor.purple][index]
-            print("ViewController \(index) initialized with color \(vc.view.backgroundColor)")
-            return vc
-        }
-        
-        // 첫 번째 뷰 컨트롤러 설정 확인
-        if !viewControllers.isEmpty {
-            print("Setting the first view controller for the pageViewController")
-            pageViewController.setViewControllers([viewControllers[0]], direction: .forward, animated: false)
-        } else {
-            print("Error: viewControllers array is empty!")
-        }
-    }
-
-
-    private func setupUI() {
-        // segmentedControl을 view에 추가
-        view.addSubview(segmentedControl)
-        
-        // Autolayout 제약 조건 설정
-        segmentedControl.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top) // 네비게이션 바의 하단과 맞춤
-            make.left.right.equalTo(view) // 왼쪽과 오른쪽을 view의 가장자리와 맞춤
-            make.height.equalTo(40) // 높이 설정
-        }
-    }
-    
-    
-    @objc private func segmentChanged(_ sender: UISegmentedControl) {
-        let selectedSegment = sender.selectedSegmentIndex
-        if selectedSegment < viewControllers.count {
-            currentPage = selectedSegment
-            let direction: UIPageViewController.NavigationDirection = currentPage > selectedSegment ? .reverse : .forward
-            pageViewController.setViewControllers([viewControllers[selectedSegment]], direction: direction, animated: true)
-        } else {
-            print("Selected segment index \(selectedSegment) is out of bounds")
-        }
-    }
-
-
     
     //섹션 레이아웃 설정
     func setupCollectionView() {
@@ -381,39 +301,9 @@ extension MainViewController: UICollectionViewDelegate {
     }
 }
 
-extension MainViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    
-  
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let index = viewControllers.firstIndex(of: viewController), index > 0 else {
-            return nil
-        }
-        return viewControllers[index - 1]
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let index = viewControllers.firstIndex(of: viewController), index + 1 < viewControllers.count else {
-            return nil
-        }
-        return viewControllers[index + 1]
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController,
-                            didFinishAnimating finished: Bool,
-                            previousViewControllers: [UIViewController],
-                            transitionCompleted completed: Bool) {
-        guard let viewController = pageViewController.viewControllers?.first,
-              let index = viewControllers.firstIndex(of: viewController), completed else {
-            return
-        }
-        currentPage = index
-        segmentedControl.selectedSegmentIndex = index
-    }
-
-}
 
 //
-//
+
 //#Preview {
 //    MainViewController()
 //}

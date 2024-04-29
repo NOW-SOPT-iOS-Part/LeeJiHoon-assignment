@@ -12,7 +12,7 @@ final class UnderlineSegmentedControl: UISegmentedControl {
     // 언더라인을 표시할 뷰
     private lazy var underlineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .green // 언더라인 색상 설정
+        view.backgroundColor = .white // 언더라인 색상 설정
         self.addSubview(view) // 언더라인 뷰를 세그먼트 컨트롤에 추가
         return view
     }()
@@ -65,7 +65,7 @@ final class UnderlineSegmentedControl: UISegmentedControl {
         // 언더라인의 X 위치 계산
         let xPosition = segmentWidth * selectedIndex + (segmentWidth - textWidth) / 2
         let yPosition = self.bounds.size.height - 2.0 // 언더라인의 Y 위치
-        let height = 2.0 // 언더라인의 높이
+        let height = 3.0 // 언더라인의 높이
 
         // 언더라인 뷰 애니메이션으로 위치 업데이트
         UIView.animate(withDuration: 0.1) {
@@ -77,14 +77,9 @@ final class UnderlineSegmentedControl: UISegmentedControl {
     // 세그먼트의 텍스트 너비를 계산
     func calculateTextWidthForSegment(at index: CGFloat) -> CGFloat {
         guard let segmentTitle = self.titleForSegment(at: Int(index)) as NSString? else { return 0 }
-        let attributes = [NSAttributedString.Key.font: self.font] // 폰트 속성
+        let attributes = [NSAttributedString.Key.font: UIFont(name: "Pretendard-Regular", size: 14)] // 폰트 속성
         let textWidth = segmentTitle.size(withAttributes: attributes).width // 텍스트 너비 계산
         return textWidth
     }
     
-    // 세그먼트의 폰트를 반환
-    private var font: UIFont {
-        // 폰트 속성이 있으면 반환하고, 없으면 시스템 기본 폰트 사용
-        return self.titleTextAttributes(for: .normal)?[.font] as? UIFont ?? UIFont.systemFont(ofSize: UIFont.systemFontSize)
-    }
 }
