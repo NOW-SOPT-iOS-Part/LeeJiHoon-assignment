@@ -6,7 +6,8 @@
 //
 
 import UIKit
-
+import Then
+import SnapKit
 
 class LiveContentCell: UICollectionViewCell {
 
@@ -18,23 +19,23 @@ class LiveContentCell: UICollectionViewCell {
     }
 
     private let titleLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        $0.textColor = .black
+        $0.font = UIFont(name: "Pretendard-Regular", size: 12)
+        $0.textColor = .white
     }
 
     private let subTitleLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .darkGray
+        $0.font = UIFont(name: "Pretendard-Regular", size: 12)
+        $0.textColor = UIColor(named: "gray2")
     }
 
     private let literLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .darkGray
+        $0.font = UIFont(name: "Pretendard-Regular", size: 12)
+        $0.textColor = UIColor(named: "gray2")
     }
 
     private let awardLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .red
+        $0.font = UIFont(name: "Pretendard-Regular", size: 12)
+        $0.textColor = .white
     }
 
     override init(frame: CGRect) {
@@ -54,31 +55,32 @@ class LiveContentCell: UICollectionViewCell {
         addSubview(literLabel)
         addSubview(awardLabel)
 
-        imageView.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
-            make.height.equalTo(self.frame.height / 2)
+        imageView.snp.makeConstraints {
+            $0.left.top.right.equalToSuperview()
+            $0.height.equalToSuperview().multipliedBy(1)
         }
 
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(4)
-            make.left.equalToSuperview().offset(4)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(self.imageView.snp.bottom).offset(4)
+            $0.left.right.equalToSuperview()
         }
 
-        subTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(2)
-            make.left.equalTo(titleLabel)
+        subTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(self.titleLabel.snp.bottom).offset(4)
+            $0.left.right.equalToSuperview()
         }
 
-        literLabel.snp.makeConstraints { make in
-            make.top.equalTo(subTitleLabel.snp.bottom).offset(2)
-            make.left.equalTo(subTitleLabel)
+        literLabel.snp.makeConstraints {
+            $0.top.equalTo(self.subTitleLabel.snp.bottom).offset(4)
+            $0.left.right.equalToSuperview()
         }
 
-        awardLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(literLabel)
-            make.right.equalToSuperview().offset(-4)
+        awardLabel.snp.makeConstraints {
+            $0.top.equalTo(self.literLabel.snp.bottom).offset(4)
+            $0.left.right.equalToSuperview()
         }
     }
+  
 
     func configures(content: LiveContent) {
         imageView.image = content.image

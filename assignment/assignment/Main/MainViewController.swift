@@ -160,43 +160,70 @@ class MainViewController: UIViewController {
         return section
     }
     
-        //MARK: - getLayoutLiveSection
+    //MARK: - getLayoutLiveSection
     private func getLayoutLiveSection() -> NSCollectionLayoutSection {
-        // item
+        // Item
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(0.5)
+            widthDimension: .fractionalWidth(0.5),
+            heightDimension: .fractionalHeight(0.46)
         )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 8)
 
-        // group
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+
+        // Group
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.9),
-            heightDimension: .fractionalHeight(0.5)
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(0.2)
         )
-        let group = NSCollectionLayoutGroup.vertical(
+
+        let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item]
         )
 
-        // header
+        // Section
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+
+        // Header
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .absolute(40)
         )
+
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top
         )
 
-        // section
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
         section.boundarySupplementaryItems = [header]
+
         return section
     }
+    //MARK: - Doosan
+    private func getLayoutHeaderSection(contents: [HeadContent]) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(500)) //image크기는 고정값 나머지는 비율로
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .paging
+        
+        //페이징 인디케이터 푸터
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: footerSize,
+            elementKind: UICollectionView.elementKindSectionFooter,
+            alignment: .bottom)
+        section.boundarySupplementaryItems = [footer]
+        
+        return section
+    }
+    
+
 
     
 }

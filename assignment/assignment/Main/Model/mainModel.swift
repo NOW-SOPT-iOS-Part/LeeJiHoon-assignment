@@ -61,6 +61,8 @@ struct MainModel {
             ], title: "티빙에서 꼭 봐야하는 컨텐츠"),
             .live(contents: [
             LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "보이즈플래닛 12화", liter: "80.1%", award: 1000),
+            LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2000),
+            LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2000),
             LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2000)
         ], title: "인기 Live 채널"),
             .freeContents(contents: [
