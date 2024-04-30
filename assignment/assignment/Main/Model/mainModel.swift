@@ -34,12 +34,17 @@ struct HeadContent {
     let image: UIImage
 }
 
+struct DoosanContent {
+    let image: UIImage
+}
+
 enum SectionType {
     case mainContents(contents: [Content], title: String)
     case freeContents(contents: [FreeContent], title: String)
     case magicContents(contents: [MagicContent], title: String)
     case live(contents: [LiveContent], title: String)
     case headContent(contents: [HeadContent])
+    case DoosanContent(contents: [DoosanContent])
 }
 
 struct MainModel {
@@ -72,6 +77,13 @@ struct MainModel {
                 FreeContent(image: UIImage(named: "contents4")!, title: "스즈메의 문단속"),
                 FreeContent(image: UIImage(named: "contents5")!, title: "두산베어스")
             ], title: "1화무료! 파라마운트 + 인기 시리즈"),
+            
+            .DoosanContent(contents: [
+                DoosanContent(image: UIImage(named: "blackDoosan")!),
+                DoosanContent(image: UIImage(named: "whiteDoosan")!),
+                DoosanContent(image: UIImage(named: "blackDoosan")!),
+                DoosanContent(image: UIImage(named: "whiteDoosan")!)
+            ]),
             .magicContents(contents: [
                 MagicContent(image: UIImage(named: "contents1")!, title: "시그널"),
                 MagicContent(image: UIImage(named: "contents2")!, title: "해리포터와 마법사의돌"),

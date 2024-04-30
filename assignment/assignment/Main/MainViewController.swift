@@ -73,6 +73,8 @@ class MainViewController: UIViewController {
                 return self.getLayoutContentsSection()
             case .live:
                 return self.getLayoutLiveSection()
+            case .doosan
+                
             default:
                 return nil
             }
@@ -202,26 +204,26 @@ class MainViewController: UIViewController {
     }
 
     //MARK: - Doosan
-//    private func getLayoutHeaderSection(contents: [HeadContent]) -> NSCollectionLayoutSection {
-//        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(500)) //image크기는 고정값 나머지는 비율로
-//        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//        
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
-//        
-//        let section = NSCollectionLayoutSection(group: group)
-//        section.orthogonalScrollingBehavior = .paging
-//        
-//        //페이징 인디케이터 푸터
-//        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(
-//            layoutSize: footerSize,
-//            elementKind: UICollectionView.elementKindSectionFooter,
-//            alignment: .bottom)
-//        section.boundarySupplementaryItems = [footer]
-//        
-//        return section
-//    }
-//    
+    private func getLayoutDoosanSection(contents: [HeadContent]) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(500)) //image크기는 고정값 나머지는 비율로
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .paging
+        
+        //페이징 인디케이터 푸터
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: footerSize,
+            elementKind: UICollectionView.elementKindSectionFooter,
+            alignment: .bottom)
+        section.boundarySupplementaryItems = [footer]
+        
+        return section
+    }
+    
 
 
     
