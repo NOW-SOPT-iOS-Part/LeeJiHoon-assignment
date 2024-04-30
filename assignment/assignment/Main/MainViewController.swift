@@ -30,28 +30,9 @@ class MainViewController: UIViewController {
     //   MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-
-    //    setupNavigationBar()
         setupCollectionView()
     }
 
-    
-    
-//    private func setupNavigationBar() {
-//        
-//        // 네비게이션 바 왼쪽 아이템 설정
-//        let leftImage = UIImage(named: "leftTving") // 왼쪽 이미지 이름으로 변경
-//        
-//        // 네비게이션 바 오른쪽 아이템 설정
-//        let rightImage = UIImage(named: "rightImage") // 오른쪽 이미지 이름으로 변경
-//        let rightButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(rightButtonAction))
-//        navigationItem.rightBarButtonItem = rightButtonItem
-//    }
-//    
-//    @objc func rightButtonAction() {
-//        // 추후 오른쪽 버튼 클릭 시 수행할 동작
-//    }
-   
     
     //섹션 레이아웃 설정
     func setupCollectionView() {
@@ -207,27 +188,25 @@ class MainViewController: UIViewController {
     //MARK: - DoosanCell
     // Function to get the layout for the Doosan section
     private func getLayoutDoosanSection(contents: [DoosanContent]) -> NSCollectionLayoutSection {
-        // Item size: Defines the size of individual cells
+        // Item
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1/2),
-            heightDimension: .fractionalHeight(1.0)
+            heightDimension: .fractionalHeight(0.8)
         )
 
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
 
-        // Group size: Defines the size of each group, consisting of two items
+        // Group
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(100) )
 
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
 
-        // Section: Defines the scrolling behavior and supplementary items
+        // Section
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-
-        // (Optional) header/footer setup can be added
 
         return section
     }
@@ -336,31 +315,6 @@ extension MainViewController: UICollectionViewDataSource {
     }
 }
 
-//extension MainViewController: UICollectionViewDelegate {
-//    
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        let visibleRect = CGRect(origin: mainCollectionView.contentOffset, size: mainCollectionView.bounds.size)
-//        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-//        guard let visibleIndexPath = mainCollectionView.indexPathForItem(at: visiblePoint) else { return }
-//        
-//        if let footerView = mainCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: visibleIndexPath.section)) as? CustomFooterView {
-//            footerView.configure(numberOfPages: mainCollectionView.numberOfItems(inSection: visibleIndexPath.section), currentPage: visibleIndexPath.item)
-//        }
-//    }
-//    
-//    //scrollview 높이 따라서 네비게이션 바 노출여부
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.contentOffset.y <= 0 {
-//            navigationController?.setNavigationBarHidden(false, animated: true)
-//        } else {
-//            navigationController?.setNavigationBarHidden(true, animated: true)
-//        }
-//    }
+//#Preview {
+//    MainViewController()
 //}
-
-
-//
-
-#Preview {
-    MainViewController()
-}
