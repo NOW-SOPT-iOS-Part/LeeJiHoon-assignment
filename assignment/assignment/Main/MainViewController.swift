@@ -73,7 +73,8 @@ class MainViewController: UIViewController {
                 return self.getLayoutContentsSection()
             case .live:
                 return self.getLayoutLiveSection()
-            case .doosan
+            case .DoosanContent(let contents):
+                return self.getLayoutDoosanSection(contents: contents)
                 
             default:
                 return nil
@@ -90,7 +91,7 @@ class MainViewController: UIViewController {
             $0.contentInsetAdjustmentBehavior = .never
             $0.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
             $0.register(TitleHeaderViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TitleHeaderViewCollectionViewCell")
-            $0.register(DoosanFooterViewCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FooterView")
+            $0.register(DoosanFooterViewCollectionViewCell.self, forCellWithReuseIdentifier: DoosanFooterViewCollectionViewCell.identifier)
             $0.register(CustomFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: CustomFooterView.identifier)
             $0.register(LiveContentCell.self, forCellWithReuseIdentifier: LiveContentCell.identifier)
 
@@ -203,27 +204,34 @@ class MainViewController: UIViewController {
         return section
     }
 
-    //MARK: - Doosan
-    private func getLayoutDoosanSection(contents: [HeadContent]) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(500)) //image크기는 고정값 나머지는 비율로
+    //MARK: - DoosanCell
+    // Function to get the layout for the Doosan section
+    private func getLayoutDoosanSection(contents: [DoosanContent]) -> NSCollectionLayoutSection {
+        // Item size: Defines the size of individual cells
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1/2),
+            heightDimension: .fractionalHeight(1.0)
+        )
+
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
-        
+        item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+
+        // Group size: Defines the size of each group, consisting of two items
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(100) )
+
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+
+        // Section: Defines the scrolling behavior and supplementary items
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .paging
-        
-        //페이징 인디케이터 푸터
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
-        let footer = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: footerSize,
-            elementKind: UICollectionView.elementKindSectionFooter,
-            alignment: .bottom)
-        section.boundarySupplementaryItems = [footer]
-        
+        section.orthogonalScrollingBehavior = .continuous
+
+        // (Optional) header/footer setup can be added
+
         return section
     }
-    
+
 
 
     
@@ -251,6 +259,9 @@ extension MainViewController: UICollectionViewDataSource {
             return contents.count
         case .magicContents(let contents, _):
             return contents.count
+        case .DoosanContent(let contents):
+            return contents.count
+            
         }
     }
     
@@ -287,7 +298,12 @@ extension MainViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LiveContentCell.identifier, for: indexPath) as! LiveContentCell
             cell.configures(content: content)
             return cell
-        }
+        case .DoosanContent(let contents):
+              let content = contents[indexPath.item]
+              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DoosanFooterViewCollectionViewCell.identifier, for: indexPath) as! DoosanFooterViewCollectionViewCell
+              cell.configure(image: content.image)
+              return cell
+          }
     }
 
         

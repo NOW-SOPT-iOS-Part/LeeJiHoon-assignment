@@ -24,7 +24,12 @@ class ContentCell: UICollectionViewCell {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
-      
+        
+        private let titleLabel = UILabel().then {
+            $0.textColor = .white
+            $0.font = UIFont(name: "Pretendard-Medium", size: 10)
+        }
+        
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -38,6 +43,7 @@ class ContentCell: UICollectionViewCell {
     
     private func setupViews() {
         contentView.addSubview(imageView)
+        contentView.addSubview(titleLabel)
     }
     
     private func setupConstraints() {
@@ -47,6 +53,10 @@ class ContentCell: UICollectionViewCell {
             $0.height.equalTo(148)
         }
         
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(imageView.snp.bottom).offset(10)
+            $0.left.right.equalToSuperview().inset(10)
+        }
         
     }
     
@@ -65,15 +75,18 @@ class ContentCell: UICollectionViewCell {
     func configure(image: UIImage, title: String, isFullWidth: Bool = false) {
         self.isFullWidth = isFullWidth
         imageView.image = image
+        titleLabel.text = title
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        titleLabel.text = nil
     }
     
     func mainCollectionConfigure(image: UIImage, title: String) {
         imageView.image = image
+        titleLabel.text = title
     }
 }
 
