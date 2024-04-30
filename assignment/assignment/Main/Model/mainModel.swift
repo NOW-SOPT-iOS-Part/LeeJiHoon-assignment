@@ -60,10 +60,10 @@ struct MainModel {
                 Content(image: UIImage(named: "contents5")!, title: "두산베어스")
             ], title: "티빙에서 꼭 봐야하는 컨텐츠"),
             .live(contents: [
-            LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "보이즈플래닛 12화", liter: "80.1%", award: 1000),
-            LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2000),
-            LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2000),
-            LiveContent(image: UIImage(named: "contents5")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2000)
+            LiveContent(image: UIImage(named: "live1")!, title: "Mnet", subTitle: "보이즈플래닛 12화", liter: "80.1%", award: 1),
+            LiveContent(image: UIImage(named: "live2")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2),
+            LiveContent(image: UIImage(named: "live1")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 3),
+            LiveContent(image: UIImage(named: "live2")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 4)
         ], title: "인기 Live 채널"),
             .freeContents(contents: [
                 FreeContent(image: UIImage(named: "contents1")!, title: "시그널"),

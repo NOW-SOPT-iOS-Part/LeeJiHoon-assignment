@@ -164,23 +164,21 @@ class MainViewController: UIViewController {
     private func getLayoutLiveSection() -> NSCollectionLayoutSection {
         // Item
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.5),
+            widthDimension: .fractionalWidth(1/3),
             heightDimension: .fractionalHeight(0.46)
         )
 
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
 
-        // Group
+        // Group s
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
+            widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(0.2)
         )
 
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(7) // 그룹간 거리 7로 고정
 
         // Section
         let section = NSCollectionLayoutSection(group: group)
@@ -188,7 +186,7 @@ class MainViewController: UIViewController {
 
         // Header
         let headerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
+            widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(40)
         )
 
@@ -202,27 +200,28 @@ class MainViewController: UIViewController {
 
         return section
     }
+
     //MARK: - Doosan
-    private func getLayoutHeaderSection(contents: [HeadContent]) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(500)) //image크기는 고정값 나머지는 비율로
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .paging
-        
-        //페이징 인디케이터 푸터
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
-        let footer = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: footerSize,
-            elementKind: UICollectionView.elementKindSectionFooter,
-            alignment: .bottom)
-        section.boundarySupplementaryItems = [footer]
-        
-        return section
-    }
-    
+//    private func getLayoutHeaderSection(contents: [HeadContent]) -> NSCollectionLayoutSection {
+//        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(500)) //image크기는 고정값 나머지는 비율로
+//        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//        
+//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
+//        
+//        let section = NSCollectionLayoutSection(group: group)
+//        section.orthogonalScrollingBehavior = .paging
+//        
+//        //페이징 인디케이터 푸터
+//        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+//        let footer = NSCollectionLayoutBoundarySupplementaryItem(
+//            layoutSize: footerSize,
+//            elementKind: UICollectionView.elementKindSectionFooter,
+//            alignment: .bottom)
+//        section.boundarySupplementaryItems = [footer]
+//        
+//        return section
+//    }
+//    
 
 
     
