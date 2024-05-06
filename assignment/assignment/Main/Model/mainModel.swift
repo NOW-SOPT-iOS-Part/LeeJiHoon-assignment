@@ -94,4 +94,23 @@ struct MainModel {
           
         ]
     }
+
 }
+
+struct BoxOfficeResult: Codable {
+    let boxofficeType: String
+    let showRange: String
+    let dailyBoxOfficeList: [Movie]
+}
+
+struct Movie: Codable {
+    let rnum: String
+    let rank: String
+    let movieCd: String
+    let movieNm: String
+    let openDt: String
+    let salesAmt: String
+    let audiCnt: String
+}
+
+

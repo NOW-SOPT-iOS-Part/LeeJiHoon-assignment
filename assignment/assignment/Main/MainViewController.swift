@@ -8,12 +8,16 @@
 import UIKit
 import Then
 import SnapKit
+import Moya
 
 class MainViewController: UIViewController {
     
     //MARK: - Properties
      var mainCollectionView : UICollectionView!
-    private var dataSource = MainModel.dummy() // 나와라 더미데이터
+    //private var dataSource = MainModel.dummy() // 나와라 더미데이터
+    
+    var provider = MoyaProvider<MovieAPI>()
+    var dataSource = MainModel(sections: []) // 나와라 더미데이터 변경
 
     
     private func setupCompositionalLayout() -> UICollectionViewLayout {
@@ -31,15 +35,40 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        fetchMovies()
     }
+    func fetchMovies() {
+           provider.request(.dailyBoxOffice(key: "<your_api_key>", targetDate: "20240505")) { [weak self] result in
+               switch result {
+               case .success(let response):
+                   do {
+                       let results = try JSONDecoder().decode(BoxOfficeResult.self, from: response.data)
+                       self?.updateMainModel(with: results.dailyBoxOfficeList)
+                       DispatchQueue.main.async {
+                           self?.mainCollectionView.reloadData()  // 메인 콜렉션 뷰 새로고침
+                       }
+                   } catch {
+                       print("Error decoding: \(error)")
+                   }
+               case .failure(let error):
+                   print("Error in fetching data: \(error)")
+               }
+           }
+       }
 
+       func updateMainModel(with movies: [Movie]) {
+           let contents = movies.map { Content(image: UIImage(named: "default_movie") ?? UIImage(), title: $0.movieNm) }
+           let mainContents = SectionType.mainContents(contents: contents, title: "티빙에서 꼭 봐야하는 컨텐츠")
+           dataSource.sections.append(mainContents)
+       }
+   
     
     //섹션 레이아웃 설정
     func setupCollectionView() {
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let self = self, sectionIndex < self.dataSource.count else { return nil }
+            guard let self = self, sectionIndex < self.dataSource.sections.count else { return nil }
 
-            let sectionType = self.dataSource[sectionIndex]
+            let sectionType = self.dataSource.sections[sectionIndex]
 
             let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
             let footer = NSCollectionLayoutBoundarySupplementaryItem(
@@ -219,13 +248,13 @@ class MainViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension MainViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataSource.count
+        return dataSource.sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        let sectionType = dataSource[section]
-        
+        let sectionType = dataSource.sections[section]
+
         switch sectionType {
         case .headContent(let contents):
             return contents.count
@@ -245,8 +274,8 @@ extension MainViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sectionType = dataSource[indexPath.section]
-        
+        let sectionType = dataSource.sections[indexPath.section]
+
         switch sectionType {
         case .headContent(let contents):
             let content = contents[indexPath.item]
@@ -291,7 +320,7 @@ extension MainViewController: UICollectionViewDataSource {
             switch kind {
             case UICollectionView.elementKindSectionHeader:
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TitleHeaderViewCollectionViewCell", for: indexPath) as! TitleHeaderViewCollectionViewCell
-                let sectionType = dataSource[indexPath.section]
+                let sectionType = dataSource.sections[indexPath.section]
                 switch sectionType {
                 case .mainContents(_, let title),
                         .freeContents(_, let title),
