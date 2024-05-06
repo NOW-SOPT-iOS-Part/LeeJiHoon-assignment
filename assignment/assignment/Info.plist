@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BASE_URL</key>
-	<string>http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json</string>
+	<string>http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice</string>
 	<key>CFBundleIdentifier</key>
 	<string></string>
 	<key>NSAppTransportSecurity</key>

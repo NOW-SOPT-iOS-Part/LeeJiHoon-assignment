@@ -22,9 +22,7 @@ enum Config {
         return dict
     }()
     
-    
 }
-
 
 extension Config {
         static let baseURL: String = {

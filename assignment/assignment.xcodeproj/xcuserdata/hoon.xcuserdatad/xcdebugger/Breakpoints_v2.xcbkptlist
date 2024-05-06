@@ -7,7 +7,70 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "92B1EEFC-A311-4FC4-BB4B-54858FFAABF2"
+            uuid = "EE837B9A-4E8B-4B4D-8F15-D5264DDE6370"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "assignment/Main/MainViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "fetchMovies()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EE837B9A-4E8B-4B4D-8F15-D5264DDE6370 - 9574e7e51c38e9dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "assignment.MainViewController.fetchMovies() -&gt; ()"
+                  moduleName = "assignment"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hoon/Desktop/SOPT/%E1%84%89%E1%85%A6%E1%84%86%E1%85%B5%E1%84%82%E1%85%A1/assignment/LeeJiHoon-assignment/assignment/assignment/Main/MainViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "204">
+               </Location>
+               <Location
+                  uuid = "EE837B9A-4E8B-4B4D-8F15-D5264DDE6370 - 9574e7e51c38e9dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "assignment.MainViewController.fetchMovies() -&gt; ()"
+                  moduleName = "assignment"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hoon/Desktop/SOPT/%E1%84%89%E1%85%A6%E1%84%86%E1%85%B5%E1%84%82%E1%85%A1/assignment/LeeJiHoon-assignment/assignment/assignment/Main/MainViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "148">
+               </Location>
+               <Location
+                  uuid = "EE837B9A-4E8B-4B4D-8F15-D5264DDE6370 - 9574e7e51c38e9fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "assignment.MainViewController.fetchMovies() -&gt; ()"
+                  moduleName = "assignment"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hoon/Desktop/SOPT/%E1%84%89%E1%85%A6%E1%84%86%E1%85%B5%E1%84%82%E1%85%A1/assignment/LeeJiHoon-assignment/assignment/assignment/Main/MainViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "204">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "115BB246-9626-4EC0-BE8D-9CCD1167F2DC"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -16,8 +79,40 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
             endingLineNumber = "67"
-            landmarkName = "setupCollectionView()"
+            landmarkName = "updateMainModel(with:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "115BB246-9626-4EC0-BE8D-9CCD1167F2DC - c7959e0f141867ca"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (assignment.Movie) -&gt; assignment.Content in assignment.MainViewController.updateMainModel(with: Swift.Array&lt;assignment.Movie&gt;) -&gt; ()"
+                  moduleName = "assignment"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hoon/Desktop/SOPT/%E1%84%89%E1%85%A6%E1%84%86%E1%85%B5%E1%84%82%E1%85%A1/assignment/LeeJiHoon-assignment/assignment/assignment/Main/MainViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "115BB246-9626-4EC0-BE8D-9CCD1167F2DC - 182702fe6c56f489"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "assignment.MainViewController.updateMainModel(with: Swift.Array&lt;assignment.Movie&gt;) -&gt; ()"
+                  moduleName = "assignment"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hoon/Desktop/SOPT/%E1%84%89%E1%85%A6%E1%84%86%E1%85%B5%E1%84%82%E1%85%A1/assignment/LeeJiHoon-assignment/assignment/assignment/Main/MainViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

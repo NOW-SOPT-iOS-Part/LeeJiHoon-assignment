@@ -4,6 +4,7 @@
 //
 //  Created by 이지훈 on 4/22/24.
 //
+
 import Foundation
 import UIKit
 
@@ -49,7 +50,7 @@ enum SectionType {
 
 struct MainModel {
     var sections: [SectionType]
-
+    
     static func dummy() -> [SectionType] {
         return [
             .headContent(contents: [
@@ -65,11 +66,11 @@ struct MainModel {
                 Content(image: UIImage(named: "contents5")!, title: "두산베어스")
             ], title: "티빙에서 꼭 봐야하는 컨텐츠"),
             .live(contents: [
-            LiveContent(image: UIImage(named: "live1")!, title: "Mnet", subTitle: "보이즈플래닛 12화", liter: "80.1%", award: 1),
-            LiveContent(image: UIImage(named: "live2")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2),
-            LiveContent(image: UIImage(named: "live1")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 3),
-            LiveContent(image: UIImage(named: "live2")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 4)
-        ], title: "인기 Live 채널"),
+                LiveContent(image: UIImage(named: "live1")!, title: "Mnet", subTitle: "보이즈플래닛 12화", liter: "80.1%", award: 1),
+                LiveContent(image: UIImage(named: "live2")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 2),
+                LiveContent(image: UIImage(named: "live1")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 3),
+                LiveContent(image: UIImage(named: "live2")!, title: "Mnet", subTitle: "하트시그넝 4화", liter: "22%2", award: 4)
+            ], title: "인기 Live 채널"),
             .freeContents(contents: [
                 FreeContent(image: UIImage(named: "contents1")!, title: "시그널"),
                 FreeContent(image: UIImage(named: "contents2")!, title: "해리포터와 마법사의돌"),
@@ -78,12 +79,12 @@ struct MainModel {
                 FreeContent(image: UIImage(named: "contents5")!, title: "두산베어스")
             ], title: "1화무료! 파라마운트 + 인기 시리즈"),
             
-            .DoosanContent(contents: [
-                DoosanContent(image: UIImage(named: "blackDoosan")!),
-                DoosanContent(image: UIImage(named: "whiteDoosan")!),
-                DoosanContent(image: UIImage(named: "blackDoosan")!),
-                DoosanContent(image: UIImage(named: "whiteDoosan")!)
-            ]),
+                .DoosanContent(contents: [
+                    DoosanContent(image: UIImage(named: "blackDoosan")!),
+                    DoosanContent(image: UIImage(named: "whiteDoosan")!),
+                    DoosanContent(image: UIImage(named: "blackDoosan")!),
+                    DoosanContent(image: UIImage(named: "whiteDoosan")!)
+                ]),
             .magicContents(contents: [
                 MagicContent(image: UIImage(named: "contents1")!, title: "시그널"),
                 MagicContent(image: UIImage(named: "contents2")!, title: "해리포터와 마법사의돌"),
@@ -91,10 +92,14 @@ struct MainModel {
                 MagicContent(image: UIImage(named: "contents4")!, title: "스즈메의 문단속"),
                 MagicContent(image: UIImage(named: "contents5")!, title: "두산베어스")
             ], title: "마술보다 더 신비로운 영화 (신비로운 영화사전님)")
-          
+            
         ]
     }
+    
+}
 
+struct BoxOfficeResponse: Codable {
+    let boxOfficeResult: BoxOfficeResult
 }
 
 struct BoxOfficeResult: Codable {
@@ -112,5 +117,3 @@ struct Movie: Codable {
     let salesAmt: String
     let audiCnt: String
 }
-
-
