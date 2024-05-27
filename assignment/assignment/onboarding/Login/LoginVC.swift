@@ -5,12 +5,14 @@
 //  Created by 이지훈 on 4/8/24.
 //
 // LoginViewController.swift
+
 import UIKit
+
 import SnapKit
 import Then
 
 class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewControllerDelegate {
-   
+    
     func didLoginWithId(id: String) {
         print(1)
     }
@@ -113,7 +115,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
             make.centerY.equalTo(passwordTextFieldView)
             make.width.height.equalTo(24)
         }
-
+        
         idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         xCircleButton.addTarget(self, action: #selector(handleXCircleButtonTap), for: .touchUpInside)
@@ -267,7 +269,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
     @objc func textFieldDidChange(_ textField: UITextField) {
         viewModel.checkValid(id: idTextFieldView.text, password: passwordTextFieldView.text)
     }
-
+    
     // 지우기 버튼 눌럿을때 동작
     @objc func handleXCircleButtonTap() {
         idTextFieldView.text = ""
@@ -278,8 +280,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
     @objc func handleLogin() {
         let welcomeVC = WelcomeViewController()
         welcomeVC.delegate = self
-        welcomeVC.id = idTextFieldView.text ?? ""
-        welcomeVC.nickname = self.nickname
+        welcomeVC.configureViewModel(id: idTextFieldView.text ?? "", nickname: self.nickname)
         welcomeVC.modalPresentationStyle = .fullScreen
         present(welcomeVC, animated: true, completion: nil)
     }
