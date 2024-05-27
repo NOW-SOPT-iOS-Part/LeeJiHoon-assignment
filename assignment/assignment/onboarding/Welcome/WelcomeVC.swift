@@ -5,6 +5,7 @@
 //  Created by 이지훈 on 4/12/24.
 
 import UIKit
+
 import Then
 import SnapKit
 
@@ -15,10 +16,8 @@ protocol WelcomeViewControllerDelegate: AnyObject {
 class WelcomeViewController: UIViewController {
     
     weak var delegate: WelcomeViewControllerDelegate?
-    //delegate에서 받은값
-    var id: String = ""
-    //closure에서 받은값
-    var nickname: String?
+    
+    private var viewModel: WelcomeViewModelType = WelcomeViewModel()
     
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "tving")
@@ -30,7 +29,6 @@ class WelcomeViewController: UIViewController {
         $0.font = UIFont(name: "Pretendard-Bold", size: 23)
         $0.textAlignment = .center
         $0.numberOfLines = 2
-        
     }
     
     let backButton = UIButton().then {
@@ -39,28 +37,29 @@ class WelcomeViewController: UIViewController {
         $0.layer.cornerRadius = 3
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-       // presentNicknameViewController()
         configureLabel()
         backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
         addSubViews()
-        Layouts()
+        setLayouts()
+        bindViewModel()
         
-        print(id)
-        print(nickname)
+        print(viewModel.id.value)
+        print(viewModel.nickname.value ?? "No nickname")
+    }
+    
+    // MARK: - Bind ViewModel
+    private func bindViewModel() {
+        viewModel.welcomeMessage.bind { [weak self] message in
+            self?.welcomeLabel.text = message
+        }
     }
     
     func configureLabel() {
-        if let nickname = nickname {
-            welcomeLabel.text = "\(nickname)님\n 반가워요!"
-            
-        } else {
-            welcomeLabel.text = "\(id)님\n 반가워요!"
-        }
+        viewModel.configureWelcomeMessage()
     }
     
     func addSubViews() {
@@ -68,7 +67,7 @@ class WelcomeViewController: UIViewController {
         views.forEach { view.addSubview($0) }
     }
     
-    func Layouts() {
+    func setLayouts() {
         imageView.snp.makeConstraints {
             $0.top.equalTo(view.snp.top).offset(58)
             $0.leading.trailing.equalToSuperview()
@@ -87,17 +86,18 @@ class WelcomeViewController: UIViewController {
         }
     }
     
-        @objc func backToMain() {
-            let mainVC = MainViewController()
+    @objc func backToMain() {
+        let mainVC = MainViewController()
         
-            if let navigationController = self.navigationController {
-                navigationController.pushViewController(mainVC, animated: true)
-        
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(mainVC, animated: true)
         }
     }
     
+    // Assign values to the viewModel
+    func configureViewModel(id: String, nickname: String?) {
+        viewModel.id.value = id
+        viewModel.nickname.value = nickname
+        viewModel.configureWelcomeMessage()
+    }
 }
-//
-//#Preview {
-//    WelcomeViewController()
-//}
