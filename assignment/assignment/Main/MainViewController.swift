@@ -16,8 +16,8 @@ class MainViewController: UIViewController {
      var mainCollectionView : UICollectionView!
     //private var dataSource = MainModel.dummy() // 나와라 더미데이터
     
-    var provider = MoyaProvider<MovieAPI>()
-    var dataSource = MainModel(sections: []) // 나와라 더미데이터 변경
+    var provider = MoyaProvider<MovieAPI>(plugins: [NetworkLoggerPlugin()])
+    var dataSource = MainModel(sections: []) //더미데이터에서 영화사이트에서 데이터 직접 가져오기로 변경
 
     
     private func setupCompositionalLayout() -> UICollectionViewLayout {
@@ -34,34 +34,55 @@ class MainViewController: UIViewController {
     //   MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupCollectionView()
         fetchMovies()
-    }
-    func fetchMovies() {
-           provider.request(.dailyBoxOffice(key: "<your_api_key>", targetDate: "20240505")) { [weak self] result in
-               switch result {
-               case .success(let response):
-                   do {
-                       let results = try JSONDecoder().decode(BoxOfficeResult.self, from: response.data)
-                       self?.updateMainModel(with: results.dailyBoxOfficeList)
-                       DispatchQueue.main.async {
-                           self?.mainCollectionView.reloadData()  // 메인 콜렉션 뷰 새로고침
-                       }
-                   } catch {
-                       print("Error decoding: \(error)")
-                   }
-               case .failure(let error):
-                   print("Error in fetching data: \(error)")
-               }
-           }
-       }
 
-       func updateMainModel(with movies: [Movie]) {
-           let contents = movies.map { Content(image: UIImage(named: "default_movie") ?? UIImage(), title: $0.movieNm) }
-           let mainContents = SectionType.mainContents(contents: contents, title: "티빙에서 꼭 봐야하는 컨텐츠")
-           dataSource.sections.append(mainContents)
-       }
-   
+    }
+    
+    func fetchMovies() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.provider.request(.dailyBoxOffice(key: "63adcda43f0b97ae5d966b40878b62fb", targetDate: "20240505")) { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        let responseDataString = String(data: response.data, encoding: .utf8) ?? "Invalid data"
+                        print("Response Data: \(responseDataString)")
+                        do {
+                            let results = try JSONDecoder().decode(BoxOfficeResponse.self, from: response.data)
+                            self?.updateMainModel(with: results.boxOfficeResult.dailyBoxOfficeList)
+                            self?.mainCollectionView.reloadData()
+                        } catch {
+                            print("Error decoding: \(error)")
+                        }
+                    case .failure(let error):
+                        print("Error in fetching data: \(error)")
+                    }
+                }
+            }
+        }
+    }
+
+// 전체 UI의 일부분만 API로 업데이트 해서 생긴 로직
+    func updateMainModel(with movies: [Movie]) {
+        let newContents = movies.map { movie in
+            Content(image: UIImage(named: "contents1") ?? UIImage(), title: movie.movieNm)
+        }
+        let newMainContents = SectionType.mainContents(contents: newContents, title: "티빙에서 꼭 봐야하는 컨텐츠")
+        
+        var updatedSections = MainModel.dummy()
+        
+        // api로 받은 데이터를 더미 데이터 리스트의 1번째 위치에 삽입
+        if updatedSections.count > 1 {
+            updatedSections.insert(newMainContents, at: 1) // 1번째 위치에 삽입
+        } else {
+            updatedSections.append(newMainContents) // 더미 데이터가 없으면 그냥 추가
+        }
+        
+        // 데이터 소스 업데이트
+        dataSource.sections = updatedSections
+    }
+
     
     //섹션 레이아웃 설정
     func setupCollectionView() {
