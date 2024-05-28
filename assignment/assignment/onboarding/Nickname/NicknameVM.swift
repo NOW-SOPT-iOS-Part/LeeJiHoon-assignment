@@ -1,4 +1,3 @@
-//
 //  NicknameVM.swift
 //  assignment
 //
@@ -13,7 +12,7 @@ protocol NicknameViewModelType {
     var errorMessage: ObservablePattern<String?> { get }
     
     func updateNickname(_ nickname: String)
-    func saveNickname()
+    func saveNickname(completion: (String?) -> Void)
 }
 
 final class NicknameViewModel: NicknameViewModelType {
@@ -28,13 +27,14 @@ final class NicknameViewModel: NicknameViewModelType {
         validateNickname(nickname)
     }
     
-    func saveNickname() {
+    func saveNickname(completion: (String?) -> Void) {
         guard let nickname = nickname.value, validateNickname(nickname) else {
             errorMessage.value = "닉네임을 한글 1~10자로 입력해주세요."
+            completion(nil)
             return
         }
         errorMessage.value = nil
-        // 닉네임 저장 로직을 여기서 처리
+        completion(nickname)
     }
     
     @discardableResult
@@ -44,3 +44,4 @@ final class NicknameViewModel: NicknameViewModelType {
         return isValid
     }
 }
+

@@ -1,4 +1,3 @@
-//
 //  NicknameViewController.swift
 //  assignment
 //
@@ -66,7 +65,7 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
         
         viewModel.errorMessage.bind { [weak self] errorMessage in
             if let errorMessage = errorMessage {
-                print("error: \(errorMessage)")
+                print("Error: \(errorMessage)")
             }
         }
     }
@@ -126,10 +125,17 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func saveNickname() {
-        viewModel.saveNickname()
-        if let nickname = viewModel.nickname.value, viewModel.isValid.value {
-            onSaveNickname?(nickname)
-            dismiss(animated: true, completion: nil)
+        print("Save Button Pressed")  // 추가한 로그
+        viewModel.saveNickname { [weak self] nickname in
+            guard let nickname = nickname else {
+                return
+            }
+            self?.onSaveNickname?(nickname)
+            
+            let welcomeVC = WelcomeViewController()
+            welcomeVC.configureViewModel(id: "", nickname: nickname)
+            welcomeVC.modalPresentationStyle = .fullScreen
+            self?.present(welcomeVC, animated: true, completion: nil)
         }
     }
 }

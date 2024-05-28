@@ -16,9 +16,9 @@ protocol WelcomeViewModelType {
 }
 
 final class WelcomeViewModel: WelcomeViewModelType {
-    var id: ObservablePattern<String> = ObservablePattern<String>("")
-    var nickname: ObservablePattern<String?> = ObservablePattern<String?>(nil)
-    var welcomeMessage: ObservablePattern<String> = ObservablePattern<String>("")
+    var id: ObservablePattern<String> = ObservablePattern("")
+    var nickname: ObservablePattern<String?> = ObservablePattern(nil)
+    var welcomeMessage: ObservablePattern<String> = ObservablePattern("")
     
     func configureWelcomeMessage() {
         if let nickname = nickname.value {
@@ -28,3 +28,4 @@ final class WelcomeViewModel: WelcomeViewModelType {
         }
     }
 }
+

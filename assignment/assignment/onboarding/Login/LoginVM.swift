@@ -33,13 +33,19 @@ final class LoginViewModel: LoginViewModelType {
         let idRegEx = "[A-Za-z0-9]{5,13}"
         let pwRegEx = "[A-Za-z0-9!_@$%^&+=]{8,20}"
         
-        guard id.range(of: idRegEx, options: .regularExpression) != nil else {
+        let isIdValid = id.range(of: idRegEx, options: .regularExpression) != nil
+        let isPasswordValid = password.range(of: pwRegEx, options: .regularExpression) != nil
+        
+        print("ID 입력 값: \(id), 유효성 검사 결과: \(isIdValid)")
+        print("비밀번호 입력 값: \(password), 유효성 검사 결과: \(isPasswordValid)") 
+        
+        guard isIdValid else {
             errMessage.value = "아이디가 유효하지 않습니다."
             isValid.value = false
             return
         }
         
-        guard password.range(of: pwRegEx, options: .regularExpression) != nil else {
+        guard isPasswordValid else {
             errMessage.value = "비밀번호가 유효하지 않습니다."
             isValid.value = false
             return
@@ -48,6 +54,7 @@ final class LoginViewModel: LoginViewModelType {
         isValid.value = true
         errMessage.value = nil
     }
+
     
     
 }

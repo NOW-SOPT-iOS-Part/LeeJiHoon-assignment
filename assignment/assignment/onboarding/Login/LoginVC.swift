@@ -103,17 +103,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
         // 패스워드 텍스트 필드 설정
         eyeButton.setImage(UIImage(named: "eyeIcon"), for: .normal)
         eyeButton.addTarget(self, action: #selector(togglePasswordView), for: .touchUpInside)
-        eyeButton.snp.makeConstraints { make in
-            make.trailing.equalTo(passwordTextFieldView.snp.trailing).offset(-20)
-            make.centerY.equalTo(passwordTextFieldView)
-            make.width.height.equalTo(24)
+        eyeButton.snp.makeConstraints {
+            $0.trailing.equalTo(passwordTextFieldView.snp.trailing).offset(-20)
+            $0.centerY.equalTo(passwordTextFieldView)
+            $0.width.height.equalTo(24)
         }
         
         xCircleButton.setImage(UIImage(named: "xCircle"), for: .normal)
-        xCircleButton.snp.makeConstraints { make in
-            make.trailing.equalTo(eyeButton.snp.leading).offset(-20)
-            make.centerY.equalTo(passwordTextFieldView)
-            make.width.height.equalTo(24)
+        xCircleButton.snp.makeConstraints {
+            $0.trailing.equalTo(eyeButton.snp.leading).offset(-20)
+            $0.centerY.equalTo(passwordTextFieldView)
+            $0.width.height.equalTo(24)
         }
         
         idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
@@ -126,15 +126,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
     
     // MARK: - Bind ViewModel
     private func bindViewModel() {
-        viewModel.isValid.bind { [weak self] isValid in
-            self?.loginButton.isEnabled = isValid
-            self?.loginButton.backgroundColor = isValid ? UIColor(named: "red") : .clear
-        }
-        
-        viewModel.errMessage.bind { [weak self] errorMessage in
-            // Handle error message UI update if needed
-        }
-    }
+           viewModel.isValid.bind { [weak self] isValid in
+               self?.loginButton.isEnabled = isValid
+               self?.loginButton.backgroundColor = isValid ? UIColor(named: "red") : .clear
+               print("isValid changed: \(isValid)") // Debug log
+           }
+           
+           viewModel.errMessage.bind { [weak self] errorMessage in
+               print("Error message: \(String(describing: errorMessage))") // Debug log
+               // Handle error message UI update if needed
+           }
+       }
     
     // MARK: - AddSubview
     func addSubViews() {
@@ -158,57 +160,57 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
     
     // MARK: - Layout
     func setConstraints() {
-        loginLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(90)
-            make.centerX.equalTo(view)
+        loginLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(90)
+            $0.centerX.equalTo(view)
         }
         
-        idTextFieldView.snp.makeConstraints { make in
-            make.top.equalTo(loginLabel.snp.bottom).offset(20)
-            make.centerX.equalTo(view)
-            make.width.equalTo(335)
-            make.height.equalTo(52)
+        idTextFieldView.snp.makeConstraints {
+            $0.top.equalTo(loginLabel.snp.bottom).offset(20)
+            $0.centerX.equalTo(view)
+            $0.width.equalTo(335)
+            $0.height.equalTo(52)
         }
         
-        passwordTextFieldView.snp.makeConstraints { make in
-            make.top.equalTo(idTextFieldView.snp.bottom).offset(20)
-            make.centerX.equalTo(view)
-            make.width.equalTo(335)
-            make.height.equalTo(52)
+        passwordTextFieldView.snp.makeConstraints {
+            $0.top.equalTo(idTextFieldView.snp.bottom).offset(20)
+            $0.centerX.equalTo(view)
+            $0.width.equalTo(335)
+            $0.height.equalTo(52)
         }
         
-        loginButton.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextFieldView.snp.bottom).offset(21)
-            make.centerX.equalTo(view)
-            make.width.equalTo(335)
-            make.height.equalTo(52)
+        loginButton.snp.makeConstraints {
+            $0.top.equalTo(passwordTextFieldView.snp.bottom).offset(21)
+            $0.centerX.equalTo(view)
+            $0.width.equalTo(335)
+            $0.height.equalTo(52)
         }
         
-        findId.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(31)
-            make.leading.equalTo(view).offset(85)
+        findId.snp.makeConstraints {
+            $0.top.equalTo(loginButton.snp.bottom).offset(31)
+            $0.leading.equalTo(view).offset(85)
         }
         
-        spaceView.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
-            make.top.equalTo(loginButton.snp.bottom).offset(31)
-            make.width.equalTo(2)
-            make.height.equalTo(14)
+        spaceView.snp.makeConstraints {
+            $0.centerX.equalTo(view)
+            $0.top.equalTo(loginButton.snp.bottom).offset(31)
+            $0.width.equalTo(2)
+            $0.height.equalTo(14)
         }
         
-        findPw.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(31)
-            make.trailing.equalTo(view).offset(-86)
+        findPw.snp.makeConstraints {
+            $0.top.equalTo(loginButton.snp.bottom).offset(31)
+            $0.trailing.equalTo(view).offset(-86)
         }
         
-        noAccount.snp.makeConstraints { make in
-            make.top.equalTo(findId.snp.bottom).offset(12)
-            make.leading.equalTo(view.snp.leading).offset(51)
+        noAccount.snp.makeConstraints {
+            $0.top.equalTo(findId.snp.bottom).offset(12)
+            $0.leading.equalTo(view.snp.leading).offset(51)
         }
         
-        makeAccount.snp.makeConstraints { make in
-            make.top.equalTo(findPw.snp.bottom).offset(12)
-            make.trailing.equalTo(view.snp.trailing).offset(-43)
+        makeAccount.snp.makeConstraints {
+            $0.top.equalTo(findPw.snp.bottom).offset(12)
+            $0.trailing.equalTo(view.snp.trailing).offset(-43)
         }
         
         // PlaceHolder 왼쪽공간 띄우기
@@ -220,24 +222,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
         passwordTextFieldView.leftViewMode = .always
         passwordTextFieldView.leftView = spacerViewForPassword
         
-        findId.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(31)
+        findId.snp.makeConstraints {
+            $0.top.equalTo(loginButton.snp.bottom).offset(31)
         }
         
         // 오른쪽 버튼 공간 띄우기
         eyeButton.setImage(UIImage(named: "eyeIcon"), for: .normal)
         eyeButton.addTarget(self, action: #selector(togglePasswordView), for: .touchUpInside)
-        eyeButton.snp.makeConstraints { make in
-            make.trailing.equalTo(passwordTextFieldView.snp.trailing).offset(-20)
-            make.centerY.equalTo(passwordTextFieldView)
-            make.width.height.equalTo(24)
+        eyeButton.snp.makeConstraints {
+            $0.trailing.equalTo(passwordTextFieldView.snp.trailing).offset(-20)
+            $0.centerY.equalTo(passwordTextFieldView)
+            $0.width.height.equalTo(24)
         }
         
         xCircleButton.setImage(UIImage(named: "xcircle"), for: .normal)
-        xCircleButton.snp.makeConstraints { make in
-            make.trailing.equalTo(eyeButton.snp.leading).offset(-20)
-            make.centerY.equalTo(passwordTextFieldView)
-            make.width.height.equalTo(24)
+        xCircleButton.snp.makeConstraints {
+            $0.trailing.equalTo(eyeButton.snp.leading).offset(-20)
+            $0.centerY.equalTo(passwordTextFieldView)
+            $0.width.height.equalTo(24)
         }
     }
     
@@ -278,12 +280,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
     
     // 로그인 화면 전환
     @objc func handleLogin() {
-        let welcomeVC = WelcomeViewController()
-        welcomeVC.delegate = self
-        welcomeVC.configureViewModel(id: idTextFieldView.text ?? "", nickname: self.nickname)
-        welcomeVC.modalPresentationStyle = .fullScreen
-        present(welcomeVC, animated: true, completion: nil)
-    }
+           guard viewModel.isValid.value else {
+               return
+           }
+           let welcomeVC = WelcomeViewController()
+           welcomeVC.delegate = self
+           welcomeVC.configureViewModel(id: idTextFieldView.text ?? "", nickname: self.nickname)
+           welcomeVC.modalPresentationStyle = .fullScreen
+           present(welcomeVC, animated: true, completion: nil)
+       }
     
     // 닉네임 만들기
     @objc func presentModalView() {
@@ -295,7 +300,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
         }
         
         modalViewController.onSaveNickname = { [weak self] nickname in
-            self?.nickname = nickname  // 닉네임 저장
+            self?.nickname = nickname
             print("닉네임 저장됨: \(nickname)")
         }
         present(modalViewController, animated: true, completion: nil)
