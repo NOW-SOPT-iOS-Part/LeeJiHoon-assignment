@@ -6,15 +6,22 @@
 //
 
 import UIKit
+// RootViewModel.swift
+import UIKit
 
 class RootViewModel {
-    var segmentTitles: [String] = ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]
+    private let segmentTitles: [String] = ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]
+    let viewControllers: [UIViewController] = [
+        MainViewController(),
+        UIViewController().then { $0.view.backgroundColor = .green },
+        UIViewController().then { $0.view.backgroundColor = .blue },
+        UIViewController().then { $0.view.backgroundColor = .white },
+        UIViewController().then { $0.view.backgroundColor = .black }
+    ]
     
-    var mainViewController: MainViewController? = nil
-    
-    var selectedSegmentIndex: Int = 0 {
+    var currentPage: Int = 0 {
         didSet {
-            onPageChanged?(selectedSegmentIndex)
+            onPageChanged?(currentPage)
         }
     }
     
@@ -24,43 +31,36 @@ class RootViewModel {
         return segmentTitles.count
     }
     
-    func titleForSegment(at index: Int) -> String {
-        return segmentTitles[index]
-    }
-    
-    func viewControllerForSegment(at index: Int) -> UIViewController {
-        switch index {
-        case 0:
-            if mainViewController == nil {
-                mainViewController = MainViewController()
-            }
-            return mainViewController!
-        case 1:
-            let vc = UIViewController()
-            vc.view.backgroundColor = .green
-            return vc
-        case 2:
-            let vc = UIViewController()
-            vc.view.backgroundColor = .blue
-            return vc
-        case 3:
-            let vc = UIViewController()
-            vc.view.backgroundColor = .white
-            return vc
-        case 4:
-            let vc = UIViewController()
-            vc.view.backgroundColor = .black
-            return vc
-        default:
-            return UIViewController()
-        }
-    }
-    
     func getSegmentTitles() -> [String] {
         return segmentTitles
     }
     
-    func getMainViewController() -> MainViewController? {
-        return mainViewController
+    func viewControllerForSegment(at index: Int) -> UIViewController {
+        return viewControllers[index]
+    }
+    
+    func setSelectedSegmentIndex(_ index: Int) {
+        currentPage = index
+    }
+    
+    func mainViewController() -> MainViewController? {
+        return viewControllers[0] as? MainViewController
+    }
+    
+    func viewControllerBefore(viewController: UIViewController) -> UIViewController? {
+        guard let index = viewControllers.firstIndex(of: viewController), index - 1 >= 0 else { return nil }
+        return viewControllers[index - 1]
+    }
+    
+    func viewControllerAfter(viewController: UIViewController) -> UIViewController? {
+        guard let index = viewControllers.firstIndex(of: viewController), index + 1 < viewControllers.count else { return nil }
+        return viewControllers[index + 1]
+    }
+    
+    func updatePage(to index: Int, completion: @escaping (UIViewController, UIPageViewController.NavigationDirection) -> Void) {
+        let direction: UIPageViewController.NavigationDirection = currentPage <= index ? .forward : .reverse
+        let viewController = viewControllers[index]
+        currentPage = index
+        completion(viewController, direction)
     }
 }
