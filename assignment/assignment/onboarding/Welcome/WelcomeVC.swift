@@ -86,8 +86,15 @@ class WelcomeViewController: UIViewController {
     }
 
     @objc func backToMain() {
-        dismiss(animated: true, completion: nil)
+        let mainVC = RootCollectionViewController()
+        
+        mainVC.modalPresentationStyle = .fullScreen
+        mainVC.modalTransitionStyle = .coverVertical // 화면 전환 애니메이션 스타일 설정 (선택적)
+
+        // MainViewController를 모달로 표시
+        self.present(mainVC, animated: true, completion: nil)
     }
+
 
     // Assign values to the viewModel
     func configureViewModel(id: String, nickname: String?) {
