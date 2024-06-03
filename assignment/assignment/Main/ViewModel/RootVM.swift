@@ -6,12 +6,10 @@
 //
 
 import UIKit
-// RootViewModel.swift
-import UIKit
 
-class RootViewModel {
+class RootViewModel: NSObject, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     private let segmentTitles: [String] = ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]
-    let viewControllers: [UIViewController] = [
+    private let viewControllers: [UIViewController] = [
         MainViewController(),
         UIViewController().then { $0.view.backgroundColor = .green },
         UIViewController().then { $0.view.backgroundColor = .blue },
@@ -19,14 +17,13 @@ class RootViewModel {
         UIViewController().then { $0.view.backgroundColor = .black }
     ]
     
+    var onPageChanged: ((Int) -> Void)?
+
     var currentPage: Int = 0 {
         didSet {
             onPageChanged?(currentPage)
         }
     }
-    
-    var onPageChanged: ((Int) -> Void)?
-    
     var numberOfSegments: Int {
         return segmentTitles.count
     }
@@ -62,5 +59,33 @@ class RootViewModel {
         let viewController = viewControllers[index]
         currentPage = index
         completion(viewController, direction)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView, navigationController: UINavigationController?) {
+        let offset = scrollView.contentOffset.y
+        let isScrollingDown = offset > 0
+        navigationController?.setNavigationBarHidden(isScrollingDown, animated: true)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView, footerViewUpdateHandler: (IndexPath, Int, Int) -> Void) {
+        if let mainvc = mainViewController(), let visibleIndexPath = mainvc.mainCollectionView.indexPathForItem(at: CGPoint(x: mainvc.mainCollectionView.contentOffset.x + mainvc.mainCollectionView.bounds.width / 2, y: mainvc.mainCollectionView.contentOffset.y + mainvc.mainCollectionView.bounds.height / 2)) {
+            let numberOfItems = mainvc.mainCollectionView.numberOfItems(inSection: visibleIndexPath.section)
+            footerViewUpdateHandler(visibleIndexPath, numberOfItems, visibleIndexPath.item)
+        }
+    }
+    
+    // MARK: - UIPageViewControllerDataSource
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        return viewControllerBefore(viewController: viewController)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        return viewControllerAfter(viewController: viewController)
+    }
+    
+    // MARK: - UIPageViewControllerDelegate
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard completed, let viewController = pageViewController.viewControllers?.first, let index = viewControllers.firstIndex(of: viewController) else { return }
+        setSelectedSegmentIndex(index)
     }
 }

@@ -4,7 +4,7 @@
 //
 //  Created by 이지훈 on 4/29/24.
 //
-// RootCollectionViewController.swift
+
 import UIKit
 import SnapKit
 import Then
@@ -13,20 +13,15 @@ class RootCollectionViewController: UIViewController {
     
     private let viewModel = RootViewModel()
     
-    private lazy var segmentedControl: UnderlineSegmentedControl = {
-        let control = UnderlineSegmentedControl(items: viewModel.getSegmentTitles()).then {
-            $0.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
-            $0.backgroundColor = .clear
-        }
-        return control
-    }()
-    
-    private lazy var pageViewController: UIPageViewController = {
-        let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        vc.delegate = self
-        vc.dataSource = self
-        return vc
-    }()
+    private lazy var segmentedControl = UnderlineSegmentedControl(items: viewModel.getSegmentTitles()).then {
+           $0.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
+           $0.backgroundColor = .clear
+       }
+       
+       private lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil).then {
+           $0.delegate = viewModel
+           $0.dataSource = viewModel
+       }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,31 +96,16 @@ class RootCollectionViewController: UIViewController {
     }
 }
 
-extension RootCollectionViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        return viewModel.viewControllerBefore(viewController: viewController)
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        return viewModel.viewControllerAfter(viewController: viewController)
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard completed, let viewController = pageViewController.viewControllers?.first, let index = viewModel.viewControllers.firstIndex(of: viewController) else { return }
-        viewModel.setSelectedSegmentIndex(index)
-    }
-}
-
 extension RootCollectionViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.y
-        let isScrollingDown = offset > 0
-        navigationController?.setNavigationBarHidden(isScrollingDown, animated: true)
+        viewModel.scrollViewDidScroll(scrollView, navigationController: navigationController)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if let mainvc = viewModel.mainViewController(), let visibleIndexPath = mainvc.mainCollectionView.indexPathForItem(at: CGPoint(x: mainvc.mainCollectionView.contentOffset.x + mainvc.mainCollectionView.bounds.width / 2, y: mainvc.mainCollectionView.contentOffset.y + mainvc.mainCollectionView.bounds.height / 2)), let footerView = mainvc.mainCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: visibleIndexPath.section)) as? CustomFooterView {
-            footerView.configure(numberOfPages: mainvc.mainCollectionView.numberOfItems(inSection: visibleIndexPath.section), currentPage: visibleIndexPath.item)
+        viewModel.scrollViewDidEndDecelerating(scrollView) { visibleIndexPath, numberOfItems, currentPage in
+            if let mainvc = viewModel.mainViewController(), let footerView = mainvc.mainCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: visibleIndexPath.section)) as? CustomFooterView {
+                footerView.configure(numberOfPages: numberOfItems, currentPage: currentPage)
+            }
         }
     }
 }
