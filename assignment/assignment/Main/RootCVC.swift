@@ -5,32 +5,31 @@
 //  Created by 이지훈 on 4/29/24.
 //
 import UIKit
+
 import SnapKit
 import Then
 
 class RootCollectionViewController: UIViewController {
     
-    private let segmentedControl = UnderlineSegmentedControl(items: ["홈", "실시간", "TV프로그램", "영화", "파라마운트+"]).then {
-        $0.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
-        $0.backgroundColor = .clear
-    }
+    private let viewModel = RootViewModel()
+    
+    private lazy var segmentedControl: UnderlineSegmentedControl = {
+        let control = UnderlineSegmentedControl(items: viewModel.getSegmentTitles()).then {
+            $0.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
+            $0.backgroundColor = .clear
+        }
+        return control
+    }()
     
     private lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        vc.setViewControllers([self.dataViewControllers[0]], direction: .forward, animated: true)
         vc.delegate = self
         vc.dataSource = self
         return vc
     }()
     
-    private let mainvc = MainViewController()
-    private let vc2 = UIViewController().then { $0.view.backgroundColor = .green }
-    private let vc3 = UIViewController().then { $0.view.backgroundColor = .blue }
-    private let vc4 = UIViewController().then { $0.view.backgroundColor = .white }
-    private let vc5 = UIViewController().then { $0.view.backgroundColor = .black }
-    
     var dataViewControllers: [UIViewController] {
-        [self.mainvc, self.vc2, self.vc3, self.vc4, self.vc5]
+        (0..<viewModel.numberOfSegments).map { viewModel.viewControllerForSegment(at: $0) }
     }
     
     var currentPage: Int = 0 {
@@ -43,14 +42,28 @@ class RootCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        setupUI()
+        viewModelBinding()
+      
+    }
+    
+    private func viewModelBinding() {
+        viewModel.onPageChanged = { [weak self] index in
+            self?.updatePage(to: index)
+        }
         
+        segmentedControl.selectedSegmentIndex = 0
+    }
+    
+    private func setupUI() {
         setupNavigationBar()
         setupSegmentsAndPageView()
         setupConstraints()
-        
         setupInitialState()
-        setupCollectionViewDelegate()
         
+        DispatchQueue.main.async { [weak self] in
+            self?.setupCollectionViewDelegate()
+        }
     }
     
     private func setupNavigationBar() {
@@ -68,8 +81,7 @@ class RootCollectionViewController: UIViewController {
         addChild(pageViewController)
         view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
-        
-        view.bringSubviewToFront(segmentedControl) // 앞으로 땡겨오기
+        view.bringSubviewToFront(segmentedControl)
     }
     
     private func setupConstraints() {
@@ -92,17 +104,24 @@ class RootCollectionViewController: UIViewController {
     }
     
     private func setupCollectionViewDelegate() {
-        mainvc.mainCollectionView.delegate = self
+        if let mainvc = viewModel.getMainViewController() {
+            mainvc.mainCollectionView.delegate = self
+        }
     }
     
     @objc private func changeValue(control: UISegmentedControl) {
         self.currentPage = control.selectedSegmentIndex
     }
+    
+    private func updatePage(to index: Int) {
+        let direction: UIPageViewController.NavigationDirection = segmentedControl.selectedSegmentIndex <= index ? .forward : .reverse
+        pageViewController.setViewControllers([viewModel.viewControllerForSegment(at: index)], direction: direction, animated: true, completion: nil)
+        segmentedControl.selectedSegmentIndex = index
+    }
 }
 
 extension RootCollectionViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
         guard let index = self.dataViewControllers.firstIndex(of: viewController), index - 1 >= 0 else { return nil }
         return self.dataViewControllers[index - 1]
     }
@@ -113,7 +132,7 @@ extension RootCollectionViewController: UIPageViewControllerDataSource, UIPageVi
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard let viewController = pageViewController.viewControllers?[0], let index = self.dataViewControllers.firstIndex(of: viewController) else { return }
+        guard completed, let viewController = pageViewController.viewControllers?.first, let index = self.dataViewControllers.firstIndex(of: viewController) else { return }
         self.currentPage = index
         self.segmentedControl.selectedSegmentIndex = index
     }
@@ -128,9 +147,11 @@ extension RootCollectionViewController: UICollectionViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        guard let visibleIndexPath = mainvc.mainCollectionView.indexPathForItem(at: CGPoint(x: mainvc.mainCollectionView.contentOffset.x + mainvc.mainCollectionView.bounds.width / 2, y: mainvc.mainCollectionView.contentOffset.y + mainvc.mainCollectionView.bounds.height / 2)) else { return }
+        guard let mainvc = viewModel.getMainViewController() else { return }
         
-        if let footerView = mainvc.mainCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: visibleIndexPath.section)) as? CustomFooterView {
+        let visibleIndexPath = mainvc.mainCollectionView.indexPathForItem(at: CGPoint(x: mainvc.mainCollectionView.contentOffset.x + mainvc.mainCollectionView.bounds.width / 2, y: mainvc.mainCollectionView.contentOffset.y + mainvc.mainCollectionView.bounds.height / 2))
+        
+        if let visibleIndexPath = visibleIndexPath, let footerView = mainvc.mainCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: visibleIndexPath.section)) as? CustomFooterView {
             footerView.configure(numberOfPages: mainvc.mainCollectionView.numberOfItems(inSection: visibleIndexPath.section), currentPage: visibleIndexPath.item)
         }
     }
