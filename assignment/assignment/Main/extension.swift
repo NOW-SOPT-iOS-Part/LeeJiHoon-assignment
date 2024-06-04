@@ -17,8 +17,8 @@ extension Bundle {
             fatalError("Couldn't load contents of privacyInfo.plist.")
         }
         
-        guard let boxofficeKey = resource["boxofficeKey"] as? String else {
-            fatalError("Couldn't find key 'boxofficeKey' in privacyInfo.plist.")
+        guard let boxofficeKey = resource["BoxOfficeKey"] as? String else {
+            fatalError("Couldn't find key 'BoxOfficeKey' in privacyInfo.plist.")
         }
         
         return boxofficeKey
