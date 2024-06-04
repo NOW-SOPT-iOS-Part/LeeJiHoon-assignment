@@ -14,11 +14,9 @@ class MainViewController: UIViewController {
     
     //MARK: - Properties
     var mainCollectionView : UICollectionView!
-    //private var dataSource = MainModel.dummy() // 나와라 더미데이터
     
     var provider = MoyaProvider<MovieAPI>(plugins: [NetworkLoggerPlugin()])
-    var dataSource = MainModel(sections: []) //더미데이터에서 영화사이트에서 데이터 직접 가져오기로 변경
-    
+    var dataSource = MainModel(sections: [])
     
     private func setupCompositionalLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
