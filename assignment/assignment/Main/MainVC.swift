@@ -37,10 +37,12 @@ class MainViewController: UIViewController {
         fetchMovies()
         
     }
-    
+   
     func fetchMovies() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.provider.request(.dailyBoxOffice(key: "63adcda43f0b97ae5d966b40878b62fb", targetDate: "20240505")) { [weak self] result in
+        DispatchQueue.main.async {
+            let apiKey = Bundle.main.boxofficeKey
+            
+            self.provider.request(.dailyBoxOffice(key: apiKey, targetDate: "20240505")) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let response):

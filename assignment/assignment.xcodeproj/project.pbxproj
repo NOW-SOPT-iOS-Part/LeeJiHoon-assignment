@@ -45,6 +45,8 @@
 		78F3280C2BE8B328001EAC45 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F3280B2BE8B328001EAC45 /* Config.swift */; };
 		78F3280E2BE8B600001EAC45 /* MovieAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F3280D2BE8B600001EAC45 /* MovieAPI.swift */; };
 		78F8391F2C0DDF06002B7AD7 /* RootVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F8391E2C0DDF06002B7AD7 /* RootVM.swift */; };
+		78F839462C0F25C0002B7AD7 /* privacyInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 78F839452C0F25C0002B7AD7 /* privacyInfo.plist */; };
+		78F839482C0F292C002B7AD7 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F839472C0F292C002B7AD7 /* extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +85,8 @@
 		78F3280B2BE8B328001EAC45 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		78F3280D2BE8B600001EAC45 /* MovieAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAPI.swift; sourceTree = "<group>"; };
 		78F8391E2C0DDF06002B7AD7 /* RootVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVM.swift; sourceTree = "<group>"; };
+		78F839452C0F25C0002B7AD7 /* privacyInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = privacyInfo.plist; sourceTree = "<group>"; };
+		78F839472C0F292C002B7AD7 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +175,7 @@
 				78A510892BD652FE005AAE0F /* MainVC.swift */,
 				78F8391C2C0DDE4E002B7AD7 /* ViewModel */,
 				78412EB72BD692B6002AA9E8 /* Model */,
+				78F839472C0F292C002B7AD7 /* extension.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 				78BAE79F2BC43AC40013CACE /* Assets.xcassets */,
 				78BAE7A12BC43AC40013CACE /* LaunchScreen.storyboard */,
 				78BAE7A42BC43AC40013CACE /* Info.plist */,
+				78F839452C0F25C0002B7AD7 /* privacyInfo.plist */,
 			);
 			path = assignment;
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 				78BAE8172BC4E6BB0013CACE /* Pretendard-Light.ttf in Resources */,
 				78BAE7A02BC43AC40013CACE /* Assets.xcassets in Resources */,
 				78BAE81C2BC4E6BB0013CACE /* Pretendard-ExtraLight.ttf in Resources */,
+				78F839462C0F25C0002B7AD7 /* privacyInfo.plist in Resources */,
 				78BAE8192BC4E6BB0013CACE /* Pretendard-Bold.ttf in Resources */,
 				78BAE81B2BC4E6BB0013CACE /* Pretendard-Medium.ttf in Resources */,
 			);
@@ -353,6 +360,7 @@
 				782EED6E2BE00B82000A3B96 /* LiveCell.swift in Sources */,
 				78BAE7992BC43AC30013CACE /* SceneDelegate.swift in Sources */,
 				78412EBB2BD699C8002AA9E8 /* ContentCell.swift in Sources */,
+				78F839482C0F292C002B7AD7 /* extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
