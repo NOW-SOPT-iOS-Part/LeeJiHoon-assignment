@@ -133,7 +133,7 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
             self?.onSaveNickname?(nickname)
             
             let welcomeVC = WelcomeViewController()
-            welcomeVC.configureViewModel(id: "", nickname: nickname)
+          //  welcomeVC.configureViewModel(id: "", nickname: nickname)
             welcomeVC.modalPresentationStyle = .fullScreen
             self?.present(welcomeVC, animated: true, completion: nil)
         }

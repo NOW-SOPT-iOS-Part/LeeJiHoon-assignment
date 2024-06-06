@@ -2,21 +2,16 @@
 //  assignment
 //
 //  Created by 이지훈 on 4/12/24.
-
 import UIKit
 
-import Then
 import SnapKit
-
-protocol WelcomeViewControllerDelegate: AnyObject {
-    func didLoginWithId(id: String)
-}
+import Then
+import RxSwift
+import RxCocoa
 
 class WelcomeViewController: UIViewController {
-
-    weak var delegate: WelcomeViewControllerDelegate?
-
-    private var viewModel: WelcomeViewModelType = WelcomeViewModel()
+    private var viewModel: WelcomeViewModelType?
+    private let disposeBag = DisposeBag()
 
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "tving")
@@ -40,25 +35,37 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
 
-        configureLabel()
-        backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
         addSubViews()
         setLayouts()
-        bindViewModel()
 
-        print("ID: \(viewModel.id.value)")
-        print("Nickname: \(viewModel.nickname.value ?? "No nickname")")
-    }
-
-    // MARK: - Bind ViewModel
-    private func bindViewModel() {
-        viewModel.welcomeMessage.bind { [weak self] message in
-            self?.welcomeLabel.text = message
+        if let viewModel = viewModel {
+            bindViewModel(viewModel)
         }
+        
+        backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
     }
 
-    func configureLabel() {
-        viewModel.configureWelcomeMessage()
+    func configureViewModel(id: String, nickname: String) {
+        let viewModel = WelcomeViewModel()
+        viewModel.id.accept(id)
+        viewModel.nickname.accept(nickname)
+        self.viewModel = viewModel
+        bindViewModel()
+        print("id: \(id)")
+        print("nickname : \(nickname)")
+    }
+
+    private func bindViewModel() {
+        viewModel?.welcomeMessage
+            .bind(to: welcomeLabel.rx.text)
+            .disposed(by: disposeBag)
+    }
+
+
+    private func bindViewModel(_ viewModel: WelcomeViewModelType) {
+        viewModel.welcomeMessage
+            .bind(to: welcomeLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 
     func addSubViews() {
@@ -87,19 +94,7 @@ class WelcomeViewController: UIViewController {
 
     @objc func backToMain() {
         let mainVC = RootCollectionViewController()
-        
         mainVC.modalPresentationStyle = .fullScreen
-        mainVC.modalTransitionStyle = .coverVertical // 화면 전환 애니메이션 스타일 설정 (선택적)
-
-        // MainViewController를 모달로 표시
         self.present(mainVC, animated: true, completion: nil)
-    }
-
-
-    // Assign values to the viewModel
-    func configureViewModel(id: String, nickname: String?) {
-        viewModel.id.value = id
-        viewModel.nickname.value = nickname
-        viewModel.configureWelcomeMessage()
     }
 }

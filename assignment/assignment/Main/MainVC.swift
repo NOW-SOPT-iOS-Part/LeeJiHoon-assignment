@@ -15,7 +15,6 @@ class MainViewController: UIViewController {
     //MARK: - Properties
     var mainCollectionView : UICollectionView!
     
-    var provider = MoyaProvider<MovieAPI>(plugins: [NetworkLoggerPlugin()])
     var dataSource = MainModel(sections: [])
     
     private func setupCompositionalLayout() -> UICollectionViewLayout {
@@ -34,35 +33,9 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         setupCollectionView()
-        fetchMovies()
         
     }
-   
-    func fetchMovies() {
-        DispatchQueue.main.async {
-            let apiKey = Bundle.main.boxofficeKey
-            
-            self.provider.request(.dailyBoxOffice(key: apiKey, targetDate: "20240505")) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let response):
-                        let responseDataString = String(data: response.data, encoding: .utf8) ?? "Invalid data"
-                        print("Response Data: \(responseDataString)")
-                        do {
-                            let results = try JSONDecoder().decode(BoxOfficeResponse.self, from: response.data)
-                            self?.updateMainModel(with: results.boxOfficeResult.dailyBoxOfficeList)
-                            self?.mainCollectionView.reloadData()
-                        } catch {
-                            print("Error decoding: \(error)")
-                        }
-                    case .failure(let error):
-                        print("Error in fetching data: \(error)")
-                    }
-                }
-            }
-        }
-    }
-    
+
     // 전체 UI의 일부분만 API로 업데이트 해서 생긴 로직
     func updateMainModel(with movies: [Movie]) {
         let newContents = movies.map { movie in
@@ -260,10 +233,7 @@ class MainViewController: UIViewController {
         
         return section
     }
-    
-    
-    
-    
+
 }
 
 // MARK: - UICollectionViewDataSource

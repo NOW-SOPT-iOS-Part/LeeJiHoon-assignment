@@ -4,22 +4,22 @@
 //
 //  Created by 이지훈 on 4/8/24.
 //
-// LoginViewController.swift
 
 import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
-class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewControllerDelegate {
-    
-    func didLoginWithId(id: String) {
-        print(1)
-    }
-    
+class LoginViewController: UIViewController, UITextFieldDelegate {
+  
+    var nickname: String?
+
     // MARK: - Properties
-    var nickname: String?  // 클로저로 받을 닉네임
     private var viewModel: LoginViewModelType = LoginViewModel()
+    private let disposeBag = DisposeBag()
+
     
     let loginLabel = UILabel().then {
         $0.text = "TVING ID 로그인"
@@ -100,6 +100,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
         setConstraints()
         bindViewModel()
         
+        setupPasswordField()
+        setupButtons()
+        setupTextFieldTargets()
+    }
+
+    private func setupPasswordField() {
         // 패스워드 텍스트 필드 설정
         eyeButton.setImage(UIImage(named: "eyeIcon"), for: .normal)
         eyeButton.addTarget(self, action: #selector(togglePasswordView), for: .touchUpInside)
@@ -108,7 +114,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
             $0.centerY.equalTo(passwordTextFieldView)
             $0.width.height.equalTo(24)
         }
-        
+    }
+
+    private func setupButtons() {
         xCircleButton.setImage(UIImage(named: "xCircle"), for: .normal)
         xCircleButton.snp.makeConstraints {
             $0.trailing.equalTo(eyeButton.snp.leading).offset(-20)
@@ -116,27 +124,59 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
             $0.width.height.equalTo(24)
         }
         
+        makeAccount.addTarget(self, action: #selector(presentModalView), for: .touchUpInside)
+    }
+
+    private func setupTextFieldTargets() {
         idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         xCircleButton.addTarget(self, action: #selector(handleXCircleButtonTap), for: .touchUpInside)
-        
-        loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-        makeAccount.addTarget(self, action: #selector(presentModalView), for: .touchUpInside)
     }
-    
-    // MARK: - Bind ViewModel
+
+    // MARK: - Binding
     private func bindViewModel() {
-           viewModel.isValid.bind { [weak self] isValid in
-               self?.loginButton.isEnabled = isValid
-               self?.loginButton.backgroundColor = isValid ? UIColor(named: "red") : .clear
-               print("isValid changed: \(isValid)") // Debug log
-           }
-           
-           viewModel.errMessage.bind { [weak self] errorMessage in
-               print("Error message: \(String(describing: errorMessage))") // Debug log
-               // Handle error message UI update if needed
-           }
-       }
+        // 텍스트 필드 입력값 변화를 뷰 모델에 바인딩합니다.
+        idTextFieldView.rx.text.orEmpty
+            .bind(to: viewModel.idInput)
+            .disposed(by: disposeBag)
+        
+        passwordTextFieldView.rx.text.orEmpty
+            .bind(to: viewModel.passwordInput)
+            .disposed(by: disposeBag)
+        
+        // 뷰 모델의 로그인 버튼 활성화 여부를 버튼에 바인딩합니다.
+        viewModel.isLoginButtonEnabled
+            .bind(to: loginButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        // 로그인 버튼 클릭 이벤트를 처리합니다.
+        loginButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.login()
+            })
+            .disposed(by: disposeBag)
+        
+        // 로그인 성공 시의 이벤트 처리를 구독합니다.
+        viewModel.loginSuccess
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] success in
+                if success {
+                    self?.navigateToWelcomeScreen()
+                } else {
+                    self?.showError("로그인에 실패하였습니다.")
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.errorMessage
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] message in
+                if let message = message {
+                    self?.showError(message)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
     
     // MARK: - AddSubview
     func addSubViews() {
@@ -262,14 +302,31 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
         return true
     }
     
+    func navigateToWelcomeScreen() {
+        let welcomeVC = WelcomeViewController()
+        welcomeVC.modalPresentationStyle = .fullScreen
+        do {
+            let idValue = try viewModel.id.value() // BehaviorSubject에서 최신 ID 값을 가져옴
+            let nicknameValue = viewModel.nickname ?? "게스트" // 올바른 닉네임 값을 사용
+            print("idValue: \(idValue) \(nicknameValue)")
+            welcomeVC.configureViewModel(id: idValue, nickname: nicknameValue)
+        } catch {
+            print("Failed to retrieve ID or nickname from ViewModel")
+        }
+        present(welcomeVC, animated: true, completion: nil)
+    }
+
+
+    func showError(_ message: String) {
+//        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: .default))
+//        self.present(alert, animated: true)
+        print(1)
+    }
+    
     // 비밀번호 보안처리
     @objc func togglePasswordView() {
         passwordTextFieldView.isSecureTextEntry.toggle()
-    }
-    
-    // 텍스트 필드 채워졌는지 확인
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        viewModel.checkValid(id: idTextFieldView.text, password: passwordTextFieldView.text)
     }
     
     // 지우기 버튼 눌럿을때 동작
@@ -277,20 +334,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
         idTextFieldView.text = ""
         passwordTextFieldView.text = ""
     }
-    
-    // 로그인 화면 전환
-    @objc func handleLogin() {
-           guard viewModel.isValid.value else {
-               return
-           }
-           let welcomeVC = WelcomeViewController()
-           welcomeVC.delegate = self
-           welcomeVC.configureViewModel(id: idTextFieldView.text ?? "", nickname: self.nickname)
-           welcomeVC.modalPresentationStyle = .fullScreen
-           present(welcomeVC, animated: true, completion: nil)
-       }
-    
-    // 닉네임 만들기
+
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        viewModel.checkValid(id: idTextFieldView.text, password: passwordTextFieldView.text)
+    }
+
+
     @objc func presentModalView() {
         let modalViewController = NicknameViewController()
         
@@ -305,4 +354,5 @@ class LoginViewController: UIViewController, UITextFieldDelegate, WelcomeViewCon
         }
         present(modalViewController, animated: true, completion: nil)
     }
+
 }

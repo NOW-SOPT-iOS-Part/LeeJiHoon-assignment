@@ -4,28 +4,42 @@
 //
 //  Created by 이지훈 on 5/27/24.
 //
-
 import Foundation
 
+import RxSwift
+import RxCocoa
+
 protocol WelcomeViewModelType {
-    var id: ObservablePattern<String> { get }
-    var nickname: ObservablePattern<String?> { get }
-    var welcomeMessage: ObservablePattern<String> { get }
+    var id: BehaviorRelay<String> { get }
+    var nickname: BehaviorRelay<String?> { get }
+    var welcomeMessage: BehaviorRelay<String> { get }
     
     func configureWelcomeMessage()
 }
 
-final class WelcomeViewModel: WelcomeViewModelType {
-    var id: ObservablePattern<String> = ObservablePattern("")
-    var nickname: ObservablePattern<String?> = ObservablePattern(nil)
-    var welcomeMessage: ObservablePattern<String> = ObservablePattern("")
+class WelcomeViewModel: WelcomeViewModelType {
+    var id = BehaviorRelay<String>(value: "")
+    var nickname = BehaviorRelay<String?>(value: "")
+    var welcomeMessage = BehaviorRelay<String>(value: "Loading...")
+
+    private let disposeBag = DisposeBag()
+
+    init() {
+        Observable.combineLatest(id.asObservable(), nickname.asObservable())
+            .map { id, nickname in
+                if let nickname = nickname {
+                    return "\(nickname)님\n 반가워요!"
+                } else {
+                    return "\(id)님\n 반가워요!"
+
+                }
+            }
+            .bind(to: welcomeMessage)
+            .disposed(by: disposeBag)
+    }
     
     func configureWelcomeMessage() {
-        if let nickname = nickname.value {
-            welcomeMessage.value = "\(nickname)님\n 반가워요!"
-        } else {
-            welcomeMessage.value = "\(id.value)님\n 반가워요!"
-        }
+        let message = nickname.value.map { "\($0)님\n 반가워요!" } ?? "\(id.value)님\n 반가워요!"
+        welcomeMessage.accept(message)
     }
 }
-
