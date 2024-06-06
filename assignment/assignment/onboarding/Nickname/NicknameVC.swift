@@ -1,4 +1,3 @@
-//
 //  NicknameViewController.swift
 //  assignment
 //
@@ -6,14 +5,16 @@
 //
 
 import UIKit
+
 import SnapKit
 import Then
 
 class NicknameViewController: UIViewController, UITextFieldDelegate {
     
-    //MARK: - Properties
+    // MARK: - Properties
     
     var onSaveNickname: ((String) -> Void)?
+    private var viewModel: NicknameViewModelType = NicknameViewModel()
     
     let nicknameLabel = UILabel().then {
         $0.text = "닉네임을 입력해주세요"
@@ -38,7 +39,6 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
         $0.backgroundColor = UIColor(named: "red")
         $0.setTitle("저장하기", for: .normal)
         $0.layer.cornerRadius = 3
-        $0.addTarget(self, action: #selector(saveNickname), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -48,11 +48,29 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
         nicknameTextField.delegate = self
         
         addSubViews()
-        layouts()
+        setConstraints()
+        bindViewModel()
         setupActions()
     }
     
-    //MARK: - AddSubViews
+    // MARK: - Bind ViewModel
+    private func bindViewModel() {
+        viewModel.nickname.bind { [weak self] nickname in
+            self?.nicknameTextField.text = nickname
+        }
+        
+        viewModel.isValid.bind { [weak self] isValid in
+            self?.saveBtn.isEnabled = isValid
+        }
+        
+        viewModel.errorMessage.bind { [weak self] errorMessage in
+            if let errorMessage = errorMessage {
+                print("Error: \(errorMessage)")
+            }
+        }
+    }
+    
+    // MARK: - AddSubViews
     func addSubViews() {
         let views = [
             nicknameLabel,
@@ -64,8 +82,8 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    //MARK: - Layouts
-    func layouts() {
+    // MARK: - Layouts
+    func setConstraints() {
         nicknameLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(50)
             $0.leading.equalToSuperview().offset(20)
@@ -86,35 +104,38 @@ class NicknameViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // MARK: - Setup Actions
     func setupActions() {
         saveBtn.addTarget(self, action: #selector(saveNickname), for: .touchUpInside)
+        nicknameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }
     
-    
-    //정규식
+    // MARK: - Text Field Delegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
         if string.isEmpty { return true }
-        //입력하는중에는 길이만 체크
         return prospectiveText.count <= 10
     }
     
-    @objc func saveNickname() {
-        if let text = nicknameTextField.text, !text.isEmpty, text.range(of: "^[가-힣]{1,10}$", options: .regularExpression) != nil {
-            onSaveNickname?(text) // 클로저로 전달
-            dismiss(animated: true, completion: nil)
-            print(text)
-        } else {
-            print("닉네임을 한글 1~10자로 입력해주세요.")
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text {
+            viewModel.updateNickname(text)
         }
     }
     
-
-
+    @objc func saveNickname() {
+        print("Save Button Pressed")  // 추가한 로그
+        viewModel.saveNickname { [weak self] nickname in
+            guard let nickname = nickname else {
+                return
+            }
+            self?.onSaveNickname?(nickname)
+            
+            let welcomeVC = WelcomeViewController()
+          //  welcomeVC.configureViewModel(id: "", nickname: nickname)
+            welcomeVC.modalPresentationStyle = .fullScreen
+            self?.present(welcomeVC, animated: true, completion: nil)
+        }
+    }
 }
-
-//#Preview{
-//    NicknameViewController()
-//}
-

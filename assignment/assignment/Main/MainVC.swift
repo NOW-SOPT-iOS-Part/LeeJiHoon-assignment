@@ -13,12 +13,9 @@ import Moya
 class MainViewController: UIViewController {
     
     //MARK: - Properties
-     var mainCollectionView : UICollectionView!
-    //private var dataSource = MainModel.dummy() // 나와라 더미데이터
+    var mainCollectionView : UICollectionView!
     
-    var provider = MoyaProvider<MovieAPI>(plugins: [NetworkLoggerPlugin()])
-    var dataSource = MainModel(sections: []) //더미데이터에서 영화사이트에서 데이터 직접 가져오기로 변경
-
+    var dataSource = MainModel(sections: [])
     
     private func setupCompositionalLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
@@ -29,41 +26,17 @@ class MainViewController: UIViewController {
             return section
         }
     }
-
+    
     
     //   MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupCollectionView()
-        fetchMovies()
-
-    }
-    
-    func fetchMovies() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.provider.request(.dailyBoxOffice(key: "63adcda43f0b97ae5d966b40878b62fb", targetDate: "20240505")) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let response):
-                        let responseDataString = String(data: response.data, encoding: .utf8) ?? "Invalid data"
-                        print("Response Data: \(responseDataString)")
-                        do {
-                            let results = try JSONDecoder().decode(BoxOfficeResponse.self, from: response.data)
-                            self?.updateMainModel(with: results.boxOfficeResult.dailyBoxOfficeList)
-                            self?.mainCollectionView.reloadData()
-                        } catch {
-                            print("Error decoding: \(error)")
-                        }
-                    case .failure(let error):
-                        print("Error in fetching data: \(error)")
-                    }
-                }
-            }
-        }
+        
     }
 
-// 전체 UI의 일부분만 API로 업데이트 해서 생긴 로직
+    // 전체 UI의 일부분만 API로 업데이트 해서 생긴 로직
     func updateMainModel(with movies: [Movie]) {
         let newContents = movies.map { movie in
             Content(image: UIImage(named: "contents1") ?? UIImage(), title: movie.movieNm)
@@ -82,21 +55,21 @@ class MainViewController: UIViewController {
         // 데이터 소스 업데이트
         dataSource.sections = updatedSections
     }
-
+    
     
     //섹션 레이아웃 설정
     func setupCollectionView() {
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self = self, sectionIndex < self.dataSource.sections.count else { return nil }
-
+            
             let sectionType = self.dataSource.sections[sectionIndex]
-
+            
             let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
             let footer = NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: footerSize,
                 elementKind: UICollectionView.elementKindSectionFooter,
                 alignment: .bottom)
-
+            
             switch sectionType {
             case .headContent(let contents):
                 return self.getLayoutHeaderSection(contents: contents)
@@ -111,7 +84,7 @@ class MainViewController: UIViewController {
                 return nil
             }
         }
-
+        
         mainCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then {
             $0.isScrollEnabled = true
             $0.showsHorizontalScrollIndicator = false
@@ -125,10 +98,10 @@ class MainViewController: UIViewController {
             $0.register(DoosanFooterViewCollectionViewCell.self, forCellWithReuseIdentifier: DoosanFooterViewCollectionViewCell.identifier)
             $0.register(CustomFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: CustomFooterView.identifier)
             $0.register(LiveContentCell.self, forCellWithReuseIdentifier: LiveContentCell.identifier)
-
+            
             $0.dataSource = self
         }
-
+        
         self.view.addSubview(mainCollectionView)
         mainCollectionView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
@@ -201,40 +174,40 @@ class MainViewController: UIViewController {
             widthDimension: .fractionalWidth(1/3),
             heightDimension: .fractionalHeight(0.46)
         )
-
+        
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
-
+        
         // Group s
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(0.2)
         )
-
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         group.interItemSpacing = .fixed(7) // 그룹간 거리 7로 고정
-
+        
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-
+        
         // Header
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(40)
         )
-
+        
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top
         )
-
+        
         section.boundarySupplementaryItems = [header]
-
+        
         return section
     }
-
+    
     //MARK: - DoosanCell
     // Function to get the layout for the Doosan section
     private func getLayoutDoosanSection(contents: [DoosanContent]) -> NSCollectionLayoutSection {
@@ -243,27 +216,24 @@ class MainViewController: UIViewController {
             widthDimension: .fractionalWidth(1/2),
             heightDimension: .fractionalHeight(0.8)
         )
-
+        
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
-
+        
         // Group
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(100) )
-
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
-
+        
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-
+        
         return section
     }
 
-
-
-    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -275,7 +245,7 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         let sectionType = dataSource.sections[section]
-
+        
         switch sectionType {
         case .headContent(let contents):
             return contents.count
@@ -296,7 +266,7 @@ extension MainViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let sectionType = dataSource.sections[indexPath.section]
-
+        
         switch sectionType {
         case .headContent(let contents):
             let content = contents[indexPath.item]
@@ -328,39 +298,39 @@ extension MainViewController: UICollectionViewDataSource {
             cell.configures(content: content)
             return cell
         case .DoosanContent(let contents):
-              let content = contents[indexPath.item]
-              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DoosanFooterViewCollectionViewCell.identifier, for: indexPath) as! DoosanFooterViewCollectionViewCell
-              cell.configure(image: content.image)
-              return cell
-          }
+            let content = contents[indexPath.item]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DoosanFooterViewCollectionViewCell.identifier, for: indexPath) as! DoosanFooterViewCollectionViewCell
+            cell.configure(image: content.image)
+            return cell
+        }
     }
-
-        
-        //Header, Footer 지정
-        func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-            switch kind {
-            case UICollectionView.elementKindSectionHeader:
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TitleHeaderViewCollectionViewCell", for: indexPath) as! TitleHeaderViewCollectionViewCell
-                let sectionType = dataSource.sections[indexPath.section]
-                switch sectionType {
-                case .mainContents(_, let title),
-                        .freeContents(_, let title),
-                        .magicContents(_, let title),
-                        .live(_, let title):
-                    header.prepare(titleText: title, subtitleText: "전체보기")
-                default:
-                    header.prepare(titleText: "", subtitleText: "")
-                }
-                return header
-                
-            case UICollectionView.elementKindSectionFooter:
-                let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CustomFooterView.identifier, for: indexPath) as! CustomFooterView
-                footer.configure(numberOfPages: collectionView.numberOfItems(inSection: indexPath.section), currentPage: indexPath.row)
-                return footer
-                
+    
+    
+    //Header, Footer 지정
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TitleHeaderViewCollectionViewCell", for: indexPath) as! TitleHeaderViewCollectionViewCell
+            let sectionType = dataSource.sections[indexPath.section]
+            switch sectionType {
+            case .mainContents(_, let title),
+                    .freeContents(_, let title),
+                    .magicContents(_, let title),
+                    .live(_, let title):
+                header.prepare(titleText: title, subtitleText: "전체보기")
             default:
-                fatalError("Unexpected element kind")
+                header.prepare(titleText: "", subtitleText: "")
             }
+            return header
+            
+        case UICollectionView.elementKindSectionFooter:
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CustomFooterView.identifier, for: indexPath) as! CustomFooterView
+            footer.configure(numberOfPages: collectionView.numberOfItems(inSection: indexPath.section), currentPage: indexPath.row)
+            return footer
+            
+        default:
+            fatalError("Unexpected element kind")
+        }
         
     }
 }

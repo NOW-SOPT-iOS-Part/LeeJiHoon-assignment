@@ -64,6 +64,21 @@
                   endingLineNumber = "45"
                   offsetFromSymbolStart = "204">
                </Location>
+               <Location
+                  uuid = "EE837B9A-4E8B-4B4D-8F15-D5264DDE6370 - 9574e7e51c38e9dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "assignment.MainViewController.fetchMovies() -&gt; ()"
+                  moduleName = "assignment"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hoon/Desktop/SOPT/%E1%84%89%E1%85%A6%E1%84%86%E1%85%B5%E1%84%82%E1%85%A1/assignment/LeeJiHoon-assignment/assignment/assignment/Main/MainViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "264">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -111,6 +126,21 @@
                   startingLineNumber = "68"
                   endingLineNumber = "68"
                   offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "115BB246-9626-4EC0-BE8D-9CCD1167F2DC - 182702fe6c56f489"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "assignment.MainViewController.updateMainModel(with: Swift.Array&lt;assignment.Movie&gt;) -&gt; ()"
+                  moduleName = "assignment"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hoon/Desktop/SOPT/%E1%84%89%E1%85%A6%E1%84%86%E1%85%B5%E1%84%82%E1%85%A1/assignment/LeeJiHoon-assignment/assignment/assignment/Main/MainViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "80">
                </Location>
             </Locations>
          </BreakpointContent>
