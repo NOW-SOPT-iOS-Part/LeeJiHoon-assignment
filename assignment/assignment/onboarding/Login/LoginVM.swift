@@ -56,12 +56,9 @@ class LoginViewModel: LoginViewModelType {
     }
     
     // 로그인 성공 여부
-    // 로그인 성공 여부
     var loginSuccess: Observable<Bool> {
         return loginSuccessSubject.asObservable()
     }
-
-  
 
     // 에러 메시지
     var errorMessage: Observable<String?> {
