@@ -7,15 +7,12 @@
 import UIKit
 import SnapKit
 import Then
-import RxSwift
-import RxCocoa
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var nickname: String?
     
-    private var viewModel: LoginViewModelType = LoginViewModel()
-    private let disposeBag = DisposeBag()
+    private var viewModel = LoginViewModel()
     private var loginView = LoginView()
 
     override func viewDidLoad() {
@@ -30,49 +27,33 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         loginView.idTextFieldView.delegate = self
         loginView.passwordTextFieldView.delegate = self
 
-        loginView.idTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        loginView.passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        loginView.idTextFieldView.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        loginView.passwordTextFieldView.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         loginView.xCircleButton.addTarget(self, action: #selector(handleXCircleButtonTap), for: .touchUpInside)
         loginView.makeAccount.addTarget(self, action: #selector(presentModalView), for: .touchUpInside)
+        loginView.loginButton.addTarget(self, action: #selector(tryLogin), for: .touchUpInside)
     }
 
-    // MARK: - Binding
     private func bindViewModel() {
-        // Binding text fields to the view model
-        loginView.idTextFieldView.rx.text.orEmpty
-            .bind(to: viewModel.idInput)
-            .disposed(by: disposeBag)
-
-        loginView.passwordTextFieldView.rx.text.orEmpty
-            .bind(to: viewModel.passwordInput)
-            .disposed(by: disposeBag)
-
-        // Binding the login button's enabled state to the view model
-        viewModel.isLoginButtonEnabled
-            .bind(to: loginView.loginButton.rx.isEnabled)
-            .disposed(by: disposeBag)
-
-        // Handling the login button tap
-        loginView.loginButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.login()
-            })
-            .disposed(by: disposeBag)
-
-        // Subscribing to the login success
-        viewModel.loginSuccess
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] success in
-                if success {
-                    self?.navigateToWelcomeScreen()
-                } else {
-                    self?.showError("로그인에 실패하였습니다.")
-                }
-            })
-            .disposed(by: disposeBag)
+        viewModel.isLoginButtonEnabled.bind { [weak self] isEnabled in
+            self?.loginView.loginButton.isEnabled = isEnabled
+        }
+        
+        viewModel.loginSuccess.bind { [weak self] success in
+            if success {
+                self?.navigateToWelcomeScreen()
+            } else {
+                self?.showError("로그인에 실패하였습니다.")
+            }
+        }
+        
+        viewModel.errorMessage.bind { [weak self] message in
+            if let msg = message {
+                self?.showError(msg)
+            }
+        }
     }
 
-    // MARK: - Event Handling
     @objc func textFieldDidChange(_ textField: UITextField) {
         viewModel.checkValid(id: loginView.idTextFieldView.text, password: loginView.passwordTextFieldView.text)
     }
@@ -84,21 +65,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @objc func presentModalView() {
         let modalViewController = NicknameViewController()
-        if let nicknameVC = modalViewController.presentationController as? UISheetPresentationController {
-            nicknameVC.detents = [.medium()]
-            nicknameVC.prefersGrabberVisible = true
-        }
+        present(modalViewController, animated: true, completion: nil)
         modalViewController.onSaveNickname = { [weak self] nickname in
             self?.nickname = nickname
             print("닉네임 저장됨: \(nickname)")
         }
-        present(modalViewController, animated: true, completion: nil)
     }
 
-    // Navigation
+    @objc func tryLogin() {
+        viewModel.login()
+    }
+
     func navigateToWelcomeScreen() {
         let welcomeVC = WelcomeViewController()
-        welcomeVC.modalPresentationStyle = .fullScreen
         present(welcomeVC, animated: true, completion: nil)
     }
 
